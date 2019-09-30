@@ -30,4 +30,8 @@ export class BoardsService {
     ];
     return of(boards);
   }
+
+  createNewBoard(board: Board) {
+    console.log('created: ', board);
+  }
 }

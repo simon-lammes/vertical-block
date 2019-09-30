@@ -15,12 +15,18 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
+import {MainMenuComponent} from './main-menu/main-menu.component';
+import {CreateBoardComponent} from './boards/create-board/create-board.component';
+import {MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
-    BoardsComponent
+    BoardsComponent,
+    MainMenuComponent,
+    CreateBoardComponent
   ],
   imports: [
     RouterModule.forRoot([
@@ -44,9 +50,17 @@ import {MatListModule} from '@angular/material/list';
     MatListModule,
     MatGridListModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
   ],
-  providers: [],
+  entryComponents: [
+    CreateBoardComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
