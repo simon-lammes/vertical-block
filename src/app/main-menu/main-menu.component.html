@@ -1,0 +1,5 @@
+<button mat-button [matMenuTriggerFor]="actions">Actions</button>
+
+<mat-menu #actions="matMenu">
+  <button mat-menu-item (click)="createBoard()">Create new board ...</button>
+</mat-menu>
