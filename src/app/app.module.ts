@@ -19,6 +19,10 @@ import {MainMenuComponent} from './main-menu/main-menu.component';
 import {CreateBoardComponent} from './boards/create-board/create-board.component';
 import {MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AuthenticationComponent} from './authentication/authentication.component';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../environments/environment';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -26,13 +30,19 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MainNavComponent,
     BoardsComponent,
     MainMenuComponent,
-    CreateBoardComponent
+    CreateBoardComponent,
+    AuthenticationComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     RouterModule.forRoot([
         {
           path: 'boards',
           component: BoardsComponent
+        },
+        {
+          path: 'authentication',
+          component: AuthenticationComponent
         },
         {
           path: '**',
@@ -57,6 +67,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatFormFieldModule,
     FormsModule,
     MatInputModule
+  ],
+  providers: [
+    AngularFireAuth
   ],
   entryComponents: [
     CreateBoardComponent,
