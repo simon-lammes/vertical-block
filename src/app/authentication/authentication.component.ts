@@ -7,7 +7,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 @Component({
   selector: 'app-authentication',
   templateUrl: './authentication.component.html',
-  styleUrls: ['./authentication.component.css']
+  styleUrls: ['./authentication.component.scss']
 })
 export class AuthenticationComponent implements OnInit, OnDestroy {
 

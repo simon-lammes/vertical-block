@@ -8,7 +8,7 @@ import {Board} from './board.model';
 @Component({
   selector: 'app-boards',
   templateUrl: './boards.component.html',
-  styleUrls: ['./boards.component.css']
+  styleUrls: ['./boards.component.scss']
 })
 export class BoardsComponent {
 
