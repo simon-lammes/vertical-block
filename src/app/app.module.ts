@@ -41,6 +41,10 @@ import {AngularFireAuth} from '@angular/fire/auth';
           component: BoardsComponent
         },
         {
+          path: 'authentication',
+          component: AuthenticationComponent
+        },
+        {
           path: '**',
           redirectTo: 'boards'
         }
@@ -69,7 +73,6 @@ import {AngularFireAuth} from '@angular/fire/auth';
   ],
   entryComponents: [
     CreateBoardComponent,
-    AuthenticationComponent
   ],
   bootstrap: [AppComponent]
 })

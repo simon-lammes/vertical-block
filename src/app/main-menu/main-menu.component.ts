@@ -3,7 +3,7 @@ import {MatDialog} from '@angular/material';
 import {CreateBoardComponent} from '../boards/create-board/create-board.component';
 import {BoardsService} from '../boards/boards.service';
 import {Board} from '../boards/board.model';
-import {AuthenticationComponent} from '../authentication/authentication.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-main-menu',
@@ -14,7 +14,8 @@ export class MainMenuComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private boardsService: BoardsService
+    private boardsService: BoardsService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -37,8 +38,6 @@ export class MainMenuComponent implements OnInit {
   }
 
   login() {
-    this.dialog.open(AuthenticationComponent, {
-      width: '350px'
-    });
+    this.router.navigate(['authentication']);
   }
 }
