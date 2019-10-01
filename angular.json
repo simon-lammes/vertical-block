@@ -124,5 +124,10 @@
       }
     }
   },
-  "defaultProject": "vertical-block"
+  "defaultProject": "vertical-block",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
