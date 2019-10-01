@@ -15,7 +15,6 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
-import {MainMenuComponent} from './main-menu/main-menu.component';
 import {CreateBoardComponent} from './boards/create-board/create-board.component';
 import {MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -29,7 +28,6 @@ import {AngularFireAuth} from '@angular/fire/auth';
     AppComponent,
     MainNavComponent,
     BoardsComponent,
-    MainMenuComponent,
     CreateBoardComponent,
     AuthenticationComponent
   ],
