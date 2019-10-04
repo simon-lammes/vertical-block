@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Board} from '../board.model';
+import {BoardBlueprint} from '../board.model';
 
 @Component({
   selector: 'app-create-board',
@@ -8,17 +8,15 @@ import {Board} from '../board.model';
   styleUrls: ['./create-board.component.scss']
 })
 export class CreateBoardComponent implements OnInit {
-
   ngOnInit(): void {
   }
 
   constructor(
     public dialogRef: MatDialogRef<CreateBoardComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {board: Board}
+    @Inject(MAT_DIALOG_DATA) public data: BoardBlueprint
   ) {}
 
   onCancel(): void {
     this.dialogRef.close();
   }
-
 }

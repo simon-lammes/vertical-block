@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Board} from './board.model';
+import {Board, BoardBlueprint} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
@@ -17,8 +17,7 @@ export class BoardsService {
 
   getAllBoardsToWhichTheUserHasAccess$() {
     return this.db.collection<Board>('boards', ref => {
-      ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32');
-      return ref;
+      return ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32');
     }).snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const board = a.payload.doc.data() as Board;
@@ -28,13 +27,18 @@ export class BoardsService {
     );
   }
 
-  createNewBoard(board: Board) {
+  createNewBoard(boardBlueprint: BoardBlueprint) {
     return this.authenticationService.getIdOfCurrentUser$().pipe(
       take(1),
       tap(userId => {
         if (!userId) {
           return;
         }
+        const board = {
+          ...boardBlueprint,
+          id: userId,
+          memberIds: [userId]
+        };
         this.db.collection('boards').add(board);
       })
     );
