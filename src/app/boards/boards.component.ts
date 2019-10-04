@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {map, shareReplay} from 'rxjs/operators';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {BoardsService} from './boards.service';
@@ -10,7 +10,7 @@ import {Board} from './board.model';
   templateUrl: './boards.component.html',
   styleUrls: ['./boards.component.scss']
 })
-export class BoardsComponent {
+export class BoardsComponent implements OnInit {
 
   // We need to know whether the client's device is very small.
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -19,7 +19,7 @@ export class BoardsComponent {
       shareReplay()
     );
 
-  boards$ = this.boardsService.allBoardsToWhichTheUserHasAccess$;
+  boards$: Observable<Board[]>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -27,17 +27,11 @@ export class BoardsComponent {
   ) {
   }
 
-  getColspanForBoard$(board: Board): Observable<number> {
-    return this.isHandset$.pipe(
-      map(isHandset => {
-        // When the device is small, boards should use more of the available width.
-        // When the board is marked as favorite, it should take up more space than usual.
-        if (isHandset || board.isFavorite) {
-          return 2;
-        }
-        return 1;
-      }),
-      shareReplay()
-    );
+  ngOnInit(): void {
+    this.boards$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
+  }
+
+  removeBoard(board: Board) {
+    this.boardsService.removeBoard(board);
   }
 }

@@ -1,5 +1,12 @@
 export interface Board {
+  id: string;
   title: string;
   description: string;
-  isFavorite: boolean;
+  creatorId: string;
+  memberIds: string[];
+}
+
+export interface BoardBlueprint {
+  title: string;
+  description: string;
 }

@@ -19,6 +19,12 @@ export class AuthenticationService {
     );
   }
 
+  getIdOfCurrentUser$(): Observable<string> {
+    return this.angularFireAuth.authState.pipe(
+      map(user => user ? user.uid : '')
+    );
+  }
+
   getIsUserAuthenticated$(): Observable<boolean> {
     return this.angularFireAuth.authState.pipe(map(user => !!user));
   }

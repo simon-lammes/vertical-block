@@ -1,18 +1,17 @@
 <h1 mat-dialog-title>New Board</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <input matInput placeholder="Title" [(ngModel)]="data.board.title">
+    <input matInput placeholder="Title" [(ngModel)]="data.title">
   </mat-form-field>
   <mat-form-field>
     <textarea matInput
               cdkTextareaAutosize
               cdkAutosizeMinRows="1"
               placeholder="Description"
-              [(ngModel)]="data.board.description"></textarea>
+              [(ngModel)]="data.description"></textarea>
   </mat-form-field>
-  <mat-checkbox [(ngModel)]="data.board.isFavorite">Favorite</mat-checkbox>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data.board">Create</button>
+  <button mat-button [mat-dialog-close]="data">Create</button>
 </div>

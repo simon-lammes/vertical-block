@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {Board} from '../boards/board.model';
+import {BoardBlueprint} from '../boards/board.model';
 import {CreateBoardComponent} from '../boards/create-board/create-board.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {BoardsService} from '../boards/boards.service';
@@ -37,18 +37,17 @@ export class MainNavComponent implements OnInit {
   }
 
   createBoard() {
-    const board: Board = {
+    const boardBlueprint: BoardBlueprint = {
       title: '',
-      description: '',
-      isFavorite: false
+      description: ''
     };
     const dialogRef = this.dialog.open(CreateBoardComponent, {
       width: '250px',
-      data: {board}
+      data: boardBlueprint
     });
 
     dialogRef.afterClosed().subscribe(newBoard => {
-      this.boardsService.createNewBoard(newBoard);
+      this.boardsService.createNewBoard(newBoard).subscribe();
     });
   }
 
@@ -62,6 +61,8 @@ export class MainNavComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.logout().then(() => this.snackBar.open('Successfully logged out.', 'X', {duration: 3000}));
+    this.authenticationService.logout().then(() =>
+      this.snackBar.open('Successfully logged out.', 'X', {duration: 3000})
+    );
   }
 }

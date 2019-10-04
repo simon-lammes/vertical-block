@@ -1,37 +1,50 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {Board} from './board.model';
+import {Board, BoardBlueprint} from './board.model';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {map, take, tap} from 'rxjs/operators';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardsService {
 
-  constructor() {
+  constructor(
+    private db: AngularFirestore,
+    private authenticationService: AuthenticationService
+  ) {
   }
 
-  get allBoardsToWhichTheUserHasAccess$(): Observable<Board[]> {
-    const boards: Board[] = [
-      {
-        title: 'School',
-        description: 'Everything I need to do for school.',
-        isFavorite: true
-      },
-      {
-        title: 'Home',
-        description: 'Managing tasks of our family.',
-        isFavorite: false
-      },
-      {
-        title: 'Netflix',
-        description: 'Everything I need to watch',
-        isFavorite: false
-      }
-    ];
-    return of(boards);
+  getAllBoardsToWhichTheUserHasAccess$() {
+    return this.db.collection<Board>('boards', ref => {
+      return ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32');
+    }).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const board = a.payload.doc.data() as Board;
+        board.id = a.payload.doc.id;
+        return board;
+      }))
+    );
   }
 
-  createNewBoard(board: Board) {
-    console.log('created: ', board);
+  createNewBoard(boardBlueprint: BoardBlueprint) {
+    return this.authenticationService.getIdOfCurrentUser$().pipe(
+      take(1),
+      tap(userId => {
+        if (!userId) {
+          return;
+        }
+        const board = {
+          ...boardBlueprint,
+          id: userId,
+          memberIds: [userId]
+        };
+        this.db.collection('boards').add(board);
+      })
+    );
+  }
+
+  removeBoard(board: Board) {
+    this.db.collection('boards').doc(board.id).delete();
   }
 }
