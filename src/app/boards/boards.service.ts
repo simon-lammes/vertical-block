@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
 import {Board} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {take, tap} from 'rxjs/operators';
+import {map, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable({
@@ -14,32 +13,19 @@ export class BoardsService {
     private db: AngularFirestore,
     private authenticationService: AuthenticationService
   ) {
-    this.getAllBoardsToWhichTheUserHasAccess$().subscribe(console.log);
   }
 
   getAllBoardsToWhichTheUserHasAccess$() {
     return this.db.collection<Board>('boards', ref => {
       ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32');
       return ref;
-    }).valueChanges();
-  }
-
-  get allBoardsToWhichTheUserHasAccess$(): Observable<Board[]> {
-    const boards: Board[] = [
-      {
-        title: 'School',
-        description: 'Everything I need to do for school.'
-      },
-      {
-        title: 'Home',
-        description: 'Managing tasks of our family.'
-      },
-      {
-        title: 'Netflix',
-        description: 'Everything I need to watch'
-      }
-    ];
-    return of(boards);
+    }).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const board = a.payload.doc.data() as Board;
+        board.id = a.payload.doc.id;
+        return board;
+      }))
+    );
   }
 
   createNewBoard(board: Board) {
@@ -52,5 +38,9 @@ export class BoardsService {
         this.db.collection('boards').add(board);
       })
     );
+  }
+
+  removeBoard(board: Board) {
+    this.db.collection('boards').doc(board.id).delete();
   }
 }

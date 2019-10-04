@@ -30,4 +30,8 @@ export class BoardsComponent implements OnInit {
   ngOnInit(): void {
     this.boards$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
   }
+
+  removeBoard(board: Board) {
+    this.boardsService.removeBoard(board);
+  }
 }
