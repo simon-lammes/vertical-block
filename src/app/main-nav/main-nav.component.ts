@@ -24,6 +24,7 @@ export class MainNavComponent implements OnInit {
     );
 
   imageUrlOfCurrentUser$: Observable<string>;
+  isUserAuthenticated$: Observable<boolean>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -57,6 +58,7 @@ export class MainNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageUrlOfCurrentUser$ = this.authenticationService.getImageUrlOfCurrentUser$();
+    this.isUserAuthenticated$ = this.authenticationService.getIsUserAuthenticated$();
   }
 
   logout() {
