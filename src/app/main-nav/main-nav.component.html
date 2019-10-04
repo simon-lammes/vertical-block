@@ -29,7 +29,10 @@
         <button mat-menu-item (click)="createBoard()">Create board</button>
       </mat-menu>
       <span class="fill-empty-space"></span>
-      <img *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl" alt="Avatar" class="avatar">
+      <img [mat-menu-trigger-for]="userActions" *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl" alt="Avatar" class="avatar">
+      <mat-menu #userActions="matMenu">
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

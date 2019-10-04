@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {Board} from '../boards/board.model';
 import {CreateBoardComponent} from '../boards/create-board/create-board.component';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {BoardsService} from '../boards/boards.service';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
@@ -30,7 +30,8 @@ export class MainNavComponent implements OnInit {
     private dialog: MatDialog,
     private boardsService: BoardsService,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -56,5 +57,9 @@ export class MainNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageUrlOfCurrentUser$ = this.authenticationService.getImageUrlOfCurrentUser$();
+  }
+
+  logout() {
+    this.authenticationService.logout().then(() => this.snackBar.open('Successfully logged out.', 'X', {duration: 3000}));
   }
 }

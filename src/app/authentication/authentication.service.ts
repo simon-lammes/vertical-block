@@ -17,4 +17,8 @@ export class AuthenticationService {
       map(user => user ? user.photoURL : '')
     );
   }
+
+  logout(): Promise<void> {
+    return this.angularFireAuth.auth.signOut();
+  }
 }
