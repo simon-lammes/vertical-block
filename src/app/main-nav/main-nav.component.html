@@ -23,7 +23,16 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <app-main-menu></app-main-menu>
+      <button mat-button [matMenuTriggerFor]="actions">Actions</button>
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item (click)="createBoard()">Create board</button>
+      </mat-menu>
+      <span class="fill-empty-space"></span>
+      <img [mat-menu-trigger-for]="userActions" *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl" alt="Avatar" class="avatar">
+      <mat-menu #userActions="matMenu">
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+      <button *ngIf="!(isUserAuthenticated$ | async)" mat-button (click)="login()">Login</button>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

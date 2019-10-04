@@ -15,3 +15,12 @@
   top: 0;
   z-index: 1;
 }
+
+img.avatar {
+  height: 75%;
+  border-radius: 50%;
+}
+
+span.fill-empty-space {
+  flex: 1 1 auto;
+}
