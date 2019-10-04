@@ -30,6 +30,7 @@ import {AuthenticationComponent} from './authentication/authentication.component
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import {AngularFireAuth} from '@angular/fire/auth';
   ],
   providers: [
     AngularFireAuth,
-    MatSnackBar
+    MatSnackBar,
+    AngularFirestore
   ],
   entryComponents: [
     CreateBoardComponent,

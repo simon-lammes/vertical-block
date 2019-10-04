@@ -39,8 +39,7 @@ export class MainNavComponent implements OnInit {
   createBoard() {
     const board: Board = {
       title: '',
-      description: '',
-      isFavorite: false
+      description: ''
     };
     const dialogRef = this.dialog.open(CreateBoardComponent, {
       width: '250px',
@@ -48,7 +47,7 @@ export class MainNavComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(newBoard => {
-      this.boardsService.createNewBoard(newBoard);
+      this.boardsService.createNewBoard(newBoard).subscribe();
     });
   }
 
@@ -62,6 +61,8 @@ export class MainNavComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.logout().then(() => this.snackBar.open('Successfully logged out.', 'X', {duration: 3000}));
+    this.authenticationService.logout().then(() =>
+      this.snackBar.open('Successfully logged out.', 'X', {duration: 3000})
+    );
   }
 }
