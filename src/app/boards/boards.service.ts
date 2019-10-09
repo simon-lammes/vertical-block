@@ -17,7 +17,7 @@ export class BoardsService {
 
   getAllBoardsToWhichTheUserHasAccess$() {
     return this.db.collection<Board>('boards', ref => {
-      return ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32');
+      return ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32').orderBy('title');
     }).snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const board = a.payload.doc.data() as Board;
