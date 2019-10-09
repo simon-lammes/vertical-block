@@ -13,7 +13,6 @@ export class BoardsService {
     private db: AngularFirestore,
     private authenticationService: AuthenticationService
   ) {
-    this.getAllBoardsToWhichTheUserHasAccess$().subscribe(console.log);
   }
 
   getAllBoardsToWhichTheUserHasAccess$() {
