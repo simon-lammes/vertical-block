@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {Observable} from 'rxjs';
+import {noop, Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {BoardBlueprint} from '../boards/board.model';
 import {CreateBoardComponent} from '../boards/create-board/create-board.component';
@@ -47,7 +47,11 @@ export class MainNavComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(newBoard => {
-      this.boardsService.createNewBoard(newBoard).subscribe();
+      this.boardsService.createNewBoard(newBoard).subscribe(
+        () => noop(),
+        err => this.snackBar.open(err.toString(), 'X', {duration: 3000}),
+        () => noop()
+      );
     });
   }
 

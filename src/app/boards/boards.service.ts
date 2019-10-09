@@ -32,7 +32,7 @@ export class BoardsService {
       take(1),
       tap(userId => {
         if (!userId) {
-          return;
+          throw new Error('User should be authenticated to create boards.');
         }
         const board = {
           ...boardBlueprint,
