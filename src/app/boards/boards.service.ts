@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Board, BoardBlueprint} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, take, tap} from 'rxjs/operators';
+import {map, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable({
@@ -13,17 +13,24 @@ export class BoardsService {
     private db: AngularFirestore,
     private authenticationService: AuthenticationService
   ) {
+    this.getAllBoardsToWhichTheUserHasAccess$().subscribe(console.log);
   }
 
   getAllBoardsToWhichTheUserHasAccess$() {
-    return this.db.collection<Board>('boards', ref => {
-      return ref.where('memberIds', 'array-contains', 'h8i03QNFcVNG0c18LDKVmhI30Q32').orderBy('title');
-    }).snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const board = a.payload.doc.data() as Board;
-        board.id = a.payload.doc.id;
-        return board;
-      }))
+    return this.authenticationService.getIdOfCurrentUser$().pipe(
+      switchMap(userId => {
+        return this.db.collection<Board>('boards', ref => ref
+          .where('memberIds', 'array-contains', userId)
+          .orderBy('title'))
+          .snapshotChanges()
+          .pipe(
+            map(actions => actions.map(a => {
+              const board = a.payload.doc.data() as Board;
+              board.id = a.payload.doc.id;
+              return board;
+            }))
+          );
+      })
     );
   }
 
