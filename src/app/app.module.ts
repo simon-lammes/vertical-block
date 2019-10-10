@@ -32,6 +32,7 @@ import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import { BoardDetailComponent } from './boards/board-detail/board-detail.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { BoardDetailComponent } from './boards/board-detail/board-detail.compone
     BoardsComponent,
     CreateBoardComponent,
     AuthenticationComponent,
-    BoardDetailComponent
+    BoardDetailComponent,
+    StatsComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
