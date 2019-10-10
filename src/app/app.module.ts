@@ -31,6 +31,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
+import { BoardDetailComponent } from './boards/board-detail/board-detail.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
     MainNavComponent,
     BoardsComponent,
     CreateBoardComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    BoardDetailComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
