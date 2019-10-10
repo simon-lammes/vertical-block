@@ -4,6 +4,8 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {BoardsService} from './boards.service';
 import {Observable} from 'rxjs';
 import {Board} from './board.model';
+import {MatDialog} from '@angular/material';
+import {AddMemberToBoardComponent} from './add-member-to-board/add-member-to-board.component';
 
 @Component({
   selector: 'app-boards',
@@ -23,7 +25,8 @@ export class BoardsComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private boardsService: BoardsService
+    private boardsService: BoardsService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -33,5 +36,19 @@ export class BoardsComponent implements OnInit {
 
   removeBoard(board: Board) {
     this.boardsService.removeBoard(board);
+  }
+
+  addMemberToBoard(board: Board) {
+    const dialogRef = this.dialog.open(AddMemberToBoardComponent, {
+      width: '250px',
+      data: board
+    });
+    const previousMemberSize = board.memberIds.length;
+    dialogRef.afterClosed().subscribe(newBoard => {
+      const membersHaveBeenAdded = previousMemberSize < newBoard.memberIds.length;
+      if (membersHaveBeenAdded) {
+        this.boardsService.updateBoard(newBoard);
+      }
+    });
   }
 }

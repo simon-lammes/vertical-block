@@ -17,7 +17,9 @@ import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
 import {CreateBoardComponent} from './boards/create-board/create-board.component';
 import {
+  MatAutocompleteModule,
   MatCheckboxModule,
+  MatChipsModule,
   MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
@@ -31,6 +33,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
     MainNavComponent,
     BoardsComponent,
     CreateBoardComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    AddMemberToBoardComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -74,7 +78,9 @@ import {AngularFirestore} from '@angular/fire/firestore';
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatAutocompleteModule,
+    MatChipsModule
   ],
   providers: [
     AngularFireAuth,
@@ -83,6 +89,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
   ],
   entryComponents: [
     CreateBoardComponent,
+    AddMemberToBoardComponent,
     MatSnackBarContainer
   ],
   bootstrap: [AppComponent]
