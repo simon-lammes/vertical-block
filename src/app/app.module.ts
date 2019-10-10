@@ -34,6 +34,8 @@ import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
+import { BoardDetailComponent } from './boards/board-detail/board-detail.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,9 @@ import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member
     MainNavComponent,
     BoardsComponent,
     CreateBoardComponent,
+    AuthenticationComponent,
+    BoardDetailComponent,
+    StatsComponent
     AuthenticationComponent,
     AddMemberToBoardComponent
   ],
