@@ -53,4 +53,8 @@ export class BoardsService {
   removeBoard(board: Board) {
     this.db.collection('boards').doc(board.id).delete();
   }
+
+  updateBoard(newBoard: Board) {
+    this.db.doc(`boards/${newBoard.id}`).set(newBoard);
+  }
 }

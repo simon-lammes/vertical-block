@@ -17,7 +17,9 @@ import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
 import {CreateBoardComponent} from './boards/create-board/create-board.component';
 import {
+  MatAutocompleteModule,
   MatCheckboxModule,
+  MatChipsModule,
   MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
@@ -31,8 +33,9 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
-import { BoardDetailComponent } from './boards/board-detail/board-detail.component';
-import { StatsComponent } from './stats/stats.component';
+import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
+import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
+import {StatsComponent} from './stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,9 @@ import { StatsComponent } from './stats/stats.component';
     CreateBoardComponent,
     AuthenticationComponent,
     BoardDetailComponent,
-    StatsComponent
+    StatsComponent,
+    AuthenticationComponent,
+    AddMemberToBoardComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -78,7 +83,9 @@ import { StatsComponent } from './stats/stats.component';
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatAutocompleteModule,
+    MatChipsModule
   ],
   providers: [
     AngularFireAuth,
@@ -87,6 +94,7 @@ import { StatsComponent } from './stats/stats.component';
   ],
   entryComponents: [
     CreateBoardComponent,
+    AddMemberToBoardComponent,
     MatSnackBarContainer
   ],
   bootstrap: [AppComponent]

@@ -10,8 +10,14 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item (click)="removeBoard(board)">Remove</button>
+              <button mat-menu-item (click)="addMemberToBoard(board)">
+                <mat-icon>person_add</mat-icon>
+                Add Person
+              </button>
+              <button mat-menu-item (click)="removeBoard(board)">
+                <mat-icon>delete</mat-icon>
+                Delete
+              </button>
             </mat-menu>
           </mat-card-title>
         </mat-card-header>
