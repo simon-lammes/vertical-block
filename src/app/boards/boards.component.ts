@@ -45,6 +45,10 @@ export class BoardsComponent implements OnInit {
     });
     const previousMemberSize = board.memberIds.length;
     dialogRef.afterClosed().subscribe(newBoard => {
+      if (!newBoard) {
+        // Obviously the dialog has been canceled.
+        return;
+      }
       const membersHaveBeenAdded = previousMemberSize < newBoard.memberIds.length;
       if (membersHaveBeenAdded) {
         this.boardsService.updateBoard(newBoard);
