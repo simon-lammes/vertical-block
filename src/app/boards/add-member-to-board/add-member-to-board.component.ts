@@ -43,6 +43,7 @@ export class AddMemberToBoardComponent implements OnInit {
 
   removeMember(member: Profile) {
     removeValueFromArray(this.membersToAdd, member);
+    removeValueFromArray(this.data.memberIds, member.uid);
     this.membersToAddBehaviourSubject.next(this.membersToAdd);
   }
 
