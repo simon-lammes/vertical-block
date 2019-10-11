@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {Board} from './board.model';
 import {MatDialog} from '@angular/material';
 import {AddMemberToBoardComponent} from './add-member-to-board/add-member-to-board.component';
+import {Profile} from '../profile/profile.model';
 
 @Component({
   selector: 'app-boards',
@@ -40,19 +41,30 @@ export class BoardsComponent implements OnInit {
 
   addMemberToBoard(board: Board) {
     const dialogRef = this.dialog.open(AddMemberToBoardComponent, {
-      width: '250px',
-      data: board
+      width: '450px',
+      data: {
+        board,
+        membersToAdd: []
+      }
     });
-    const previousMemberSize = board.memberIds.length;
-    dialogRef.afterClosed().subscribe(newBoard => {
-      if (!newBoard) {
-        // Obviously the dialog has been canceled.
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data || !data.membersToAdd) {
+        // Obviously there are no members to add.
         return;
       }
-      const membersHaveBeenAdded = previousMemberSize < newBoard.memberIds.length;
-      if (membersHaveBeenAdded) {
-        this.boardsService.updateBoard(newBoard);
-      }
+      const membersToAdd: Profile[] = data.membersToAdd;
+      membersToAdd.forEach(memberToAdd => {
+        if (board.memberIds.includes(memberToAdd.uid)) {
+          throw console.error('Tried to add a member id to board although it is already part of the of board.');
+        }
+        board.memberIds.push(memberToAdd.uid);
+      });
+      this.boardsService.updateBoard(board);
     });
+  }
+
+  getColspanForBoard$() {
+    // A board should take up more columns if the device is small.
+    return this.isHandset$.pipe(map(isHandset => isHandset ? 2 : 1));
   }
 }
