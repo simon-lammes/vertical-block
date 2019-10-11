@@ -20,7 +20,7 @@ import {
   MatAutocompleteModule,
   MatCheckboxModule,
   MatChipsModule,
-  MatDialogModule,
+  MatDialogModule, MatExpansionModule,
   MatFormFieldModule,
   MatInputModule,
   MatSnackBar,
@@ -61,6 +61,10 @@ import {StatsComponent} from './stats/stats.component';
           component: AuthenticationComponent
         },
         {
+        path: 'board-detail',
+        component: BoardDetailComponent
+        },
+        {
           path: '**',
           redirectTo: 'boards'
         }
@@ -85,7 +89,8 @@ import {StatsComponent} from './stats/stats.component';
     MatInputModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatExpansionModule
   ],
   providers: [
     AngularFireAuth,
