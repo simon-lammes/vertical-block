@@ -3,7 +3,7 @@
   <mat-form-field class="demo-chip-list">
     <mat-chip-list #chipList>
       <mat-chip
-        *ngFor="let member of membersToAdd"
+        *ngFor="let member of membersToInvite"
         (removed)="removeMember(member)">
         {{member.email}}
         <mat-icon matChipRemove>cancel</mat-icon>

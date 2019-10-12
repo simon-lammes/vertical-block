@@ -5,7 +5,7 @@ import {BoardsService} from './boards.service';
 import {Observable} from 'rxjs';
 import {Board} from './board.model';
 import {MatDialog} from '@angular/material';
-import {AddMemberToBoardComponent} from './add-member-to-board/add-member-to-board.component';
+import {InviteMembersToBoardComponent} from './invite-members-to-board/invite-members-to-board.component';
 import {Profile} from '../profile/profile.model';
 
 @Component({
@@ -40,24 +40,24 @@ export class BoardsComponent implements OnInit {
   }
 
   addMemberToBoard(board: Board) {
-    const dialogRef = this.dialog.open(AddMemberToBoardComponent, {
+    const dialogRef = this.dialog.open(InviteMembersToBoardComponent, {
       width: '450px',
       data: {
         board,
-        membersToAdd: []
+        membersToInvite: []
       }
     });
     dialogRef.afterClosed().subscribe(data => {
-      if (!data || !data.membersToAdd) {
+      if (!data || !data.membersToInvite) {
         // Obviously there are no members to add.
         return;
       }
-      const membersToAdd: Profile[] = data.membersToAdd;
-      membersToAdd.forEach(memberToAdd => {
-        if (board.memberIds.includes(memberToAdd.uid)) {
-          throw console.error('Tried to add a member id to board although it is already part of the of board.');
+      const membersToInvite: Profile[] = data.membersToInvite;
+      membersToInvite.forEach(memberToInvite => {
+        if (board.idsOfInvitedUsers.includes(memberToInvite.uid) || board.memberIds.includes(memberToInvite.uid)) {
+          throw console.error('Tried to invite a member id to board although it is already part of the of board or already invited.');
         }
-        board.memberIds.push(memberToAdd.uid);
+        board.idsOfInvitedUsers.push(memberToInvite.uid);
       });
       this.boardsService.updateBoard(board);
     });

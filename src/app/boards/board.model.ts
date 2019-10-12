@@ -4,6 +4,7 @@ export interface Board {
   description: string;
   creatorId: string;
   memberIds: string[];
+  idsOfInvitedUsers: string[];
 }
 
 export interface BoardBlueprint {

@@ -20,7 +20,8 @@ import {
   MatAutocompleteModule,
   MatCheckboxModule,
   MatChipsModule,
-  MatDialogModule, MatExpansionModule,
+  MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatInputModule,
   MatSnackBar,
@@ -33,7 +34,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
+import {InviteMembersToBoardComponent} from './boards/invite-members-to-board/invite-members-to-board.component';
 import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
 import {StatsComponent} from './stats/stats.component';
 
@@ -47,7 +48,7 @@ import {StatsComponent} from './stats/stats.component';
     BoardDetailComponent,
     StatsComponent,
     AuthenticationComponent,
-    AddMemberToBoardComponent
+    InviteMembersToBoardComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -61,8 +62,8 @@ import {StatsComponent} from './stats/stats.component';
           component: AuthenticationComponent
         },
         {
-        path: 'board-detail',
-        component: BoardDetailComponent
+          path: 'board-detail',
+          component: BoardDetailComponent
         },
         {
           path: '**',
@@ -99,7 +100,7 @@ import {StatsComponent} from './stats/stats.component';
   ],
   entryComponents: [
     CreateBoardComponent,
-    AddMemberToBoardComponent,
+    InviteMembersToBoardComponent,
     MatSnackBarContainer
   ],
   bootstrap: [AppComponent]

@@ -40,10 +40,11 @@ export class BoardsService {
         if (!userId) {
           throw new Error('User should be authenticated to create boards.');
         }
-        const board = {
+        const board: Partial<Board> = {
           ...boardBlueprint,
-          id: userId,
-          memberIds: [userId]
+          creatorId: userId,
+          memberIds: [userId],
+          idsOfInvitedUsers: []
         };
         this.db.collection('boards').add(board);
       })
