@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map} from 'rxjs/operators';
+import {map, switchMap, take} from 'rxjs/operators';
 import {Profile} from './profile.model';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,7 @@ export class ProfileService {
 
   constructor(
     private db: AngularFirestore,
+    private authenticationService: AuthenticationService
   ) {
   }
 
@@ -21,5 +24,26 @@ export class ProfileService {
         return profile;
       })),
     );
+  }
+
+  getProfileOfCurrentUser$(): Observable<Profile> {
+    return this.authenticationService.getIdOfCurrentUser$().pipe(
+      switchMap(userId => {
+        return this.db.collection('profiles').doc<Profile>(userId).valueChanges();
+      })
+    );
+  }
+
+  getProfileOfCurrentUserSnapshot(): Promise<Profile> {
+    return this.getProfileOfCurrentUser$().pipe(take(1)).toPromise();
+  }
+
+  updateProfileOfCurrentUser$(updatedProfile: Profile) {
+    return this.authenticationService.getIdOfCurrentUser$().pipe(
+      take(1),
+      switchMap(userId => {
+        return this.db.collection('profiles').doc<Profile>(userId).set(updatedProfile);
+      })
+    ).toPromise();
   }
 }

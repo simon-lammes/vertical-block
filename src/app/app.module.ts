@@ -37,6 +37,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {InviteMembersToBoardComponent} from './boards/invite-members-to-board/invite-members-to-board.component';
 import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
 import {StatsComponent} from './stats/stats.component';
+import {ProfileComponent} from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {StatsComponent} from './stats/stats.component';
     BoardDetailComponent,
     StatsComponent,
     AuthenticationComponent,
-    InviteMembersToBoardComponent
+    InviteMembersToBoardComponent,
+    ProfileComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -64,6 +66,10 @@ import {StatsComponent} from './stats/stats.component';
         {
           path: 'board-detail',
           component: BoardDetailComponent
+        },
+        {
+          path: 'profile',
+          component: ProfileComponent
         },
         {
           path: '**',
