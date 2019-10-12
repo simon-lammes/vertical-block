@@ -22,7 +22,9 @@ export class BoardsComponent implements OnInit {
       shareReplay()
     );
 
-  boards$: Observable<Board[]>;
+  boardsToWhichTheUserHasAccess$: Observable<Board[]>;
+  boardsToWhichTheUserHasBeenInvited$: Observable<Board[]>;
+  hasUserBeenInvitedToBoards$: Observable<boolean>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -32,7 +34,9 @@ export class BoardsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.boards$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
+    this.boardsToWhichTheUserHasAccess$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
+    this.boardsToWhichTheUserHasBeenInvited$ = this.boardsService.getAllBoardsToWhichTheUserHasBeenInvited$();
+    this.hasUserBeenInvitedToBoards$ = this.boardsService.hasUserBeenInvitedToBoards$();
   }
 
   removeBoard(board: Board) {
@@ -66,5 +70,13 @@ export class BoardsComponent implements OnInit {
   getColspanForBoard$() {
     // A board should take up more columns if the device is small.
     return this.isHandset$.pipe(map(isHandset => isHandset ? 2 : 1));
+  }
+
+  acceptInvitationToBoard(board: Board) {
+    this.boardsService.acceptInvitationToBoard(board);
+  }
+
+  declineInvitationToBoard(board: Board) {
+    this.boardsService.declineInvitationToBoard(board);
   }
 }
