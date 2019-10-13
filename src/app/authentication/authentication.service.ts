@@ -13,7 +13,14 @@ export class AuthenticationService {
   ) {
   }
 
-  getImageUrlOfCurrentUser$(): Observable<string> {
+  /**
+   * Gets the image of the user provided by Firebase Authentication.
+   * The users profile photo url has nothing to do with this method
+   * because the authentication.service.ts should know nothing about profiles.
+   * A disadvantage of the returned photoURL is that the user cannot change it.
+   * For a customizable photoURL, use the profile.service.ts.
+   */
+  getPhotoUrlOfCurrentUserProvidedByFirebaseAuth$(): Observable<string> {
     return this.angularFireAuth.authState.pipe(
       map(user => user ? user.photoURL : '')
     );
@@ -26,7 +33,9 @@ export class AuthenticationService {
   }
 
   getIsUserAuthenticated$(): Observable<boolean> {
-    return this.angularFireAuth.authState.pipe(map(user => !!user));
+    return this.angularFireAuth.authState.pipe(
+      map(user => !!user)
+    );
   }
 
   logout(): Promise<void> {

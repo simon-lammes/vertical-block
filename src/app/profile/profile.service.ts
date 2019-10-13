@@ -3,7 +3,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap, take} from 'rxjs/operators';
 import {Profile} from './profile.model';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +22,31 @@ export class ProfileService {
         const profile = a.payload.doc.data() as Profile;
         profile.uid = a.payload.doc.id;
         return profile;
-      })),
+      }))
     );
   }
 
   getProfileOfCurrentUser$(): Observable<Profile> {
     return this.authenticationService.getIdOfCurrentUser$().pipe(
       switchMap(userId => {
+        if (!userId) {
+          return of(undefined);
+        }
         return this.db.collection('profiles').doc<Profile>(userId).valueChanges();
+      })
+    );
+  }
+
+  /**
+   * This method returns the profileURL which the user can change in his profile settings.
+   */
+  getPhotoUrlOfCurrentUserProfile$() {
+    return this.getProfileOfCurrentUser$().pipe(
+      map(profile => {
+        if (!profile) {
+          return '';
+        }
+        return profile.photoURL;
       })
     );
   }
@@ -38,11 +55,11 @@ export class ProfileService {
     return this.getProfileOfCurrentUser$().pipe(take(1)).toPromise();
   }
 
-  updateProfileOfCurrentUser$(updatedProfile: Profile) {
+  updateProfileOfCurrentUser$(profileUpdates: Partial<Profile>) {
     return this.authenticationService.getIdOfCurrentUser$().pipe(
       take(1),
       switchMap(userId => {
-        return this.db.collection('profiles').doc<Profile>(userId).set(updatedProfile);
+        return this.db.collection('profiles').doc<Profile>(userId).update(profileUpdates);
       })
     ).toPromise();
   }

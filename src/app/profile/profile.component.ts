@@ -4,6 +4,9 @@ import {ProfileService} from './profile.service';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 import {Profile} from './profile.model';
 import {MatSnackBar} from '@angular/material';
+import {combineLatest, Observable} from 'rxjs';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {map, startWith, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -12,9 +15,13 @@ import {MatSnackBar} from '@angular/material';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
+  // When the user changes his profile photo URL to something different than provided by firebase we want
+  // to give him the option to reset his photo URL.
+  photoUrlCouldBeReset$: Observable<boolean>;
 
   constructor(
     private profileService: ProfileService,
+    private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar
   ) { }
@@ -30,7 +37,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
         displayName: profile.displayName,
         photoURL: profile.photoURL
       });
-      this.profileForm.controls.email.disable();
+      this.photoUrlCouldBeReset$ = combineLatest(
+        // Without the following "startWith", this observable would emit its first value when the user changes
+        // something in the form and thereby triggers the valueChanges.
+        // But we want this observable to emit a value right at the start so that we know right from the start
+        // whether the photo URL could be reset.
+        this.profileForm.valueChanges.pipe(startWith(this.profileForm.value)),
+        this.authenticationService.getPhotoUrlOfCurrentUserProvidedByFirebaseAuth$()
+      ).pipe(
+        map(([changes, providedPhotoURL]) => {
+          console.log(changes, providedPhotoURL);
+          return changes.photoURL !== providedPhotoURL;
+        })
+      );
     });
   }
 
@@ -51,8 +70,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // The user wants to undo his update, so we update back to his old profile.
         this.profileService.updateProfileOfCurrentUser$(oldProfile);
       });
-    }).catch(reason => {
-      this.snackBar.open(reason, 'X', {duration: 3000});
+    }).catch(error => {
+      this.snackBar.open(error, 'X', {duration: 4000});
+      console.error(error);
+    });
+  }
+
+  resetPhotoURL() {
+    this.authenticationService.getPhotoUrlOfCurrentUserProvidedByFirebaseAuth$().pipe(
+      take(1),
+      tap(photoURL => {
+        this.profileForm.patchValue({photoURL});
+      })
+    ).toPromise().catch(error => {
+      this.snackBar.open(error, 'X', {duration: 4000});
+      console.error(error);
     });
   }
 }

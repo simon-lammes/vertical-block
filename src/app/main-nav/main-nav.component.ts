@@ -8,6 +8,7 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {BoardsService} from '../boards/boards.service';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {ProfileService} from '../profile/profile.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -32,7 +33,8 @@ export class MainNavComponent implements OnInit {
     private boardsService: BoardsService,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private profileService: ProfileService
   ) {
   }
 
@@ -49,7 +51,10 @@ export class MainNavComponent implements OnInit {
     dialogRef.afterClosed().subscribe(newBoard => {
       this.boardsService.createNewBoard(newBoard).subscribe(
         () => noop(),
-        err => this.snackBar.open(err.toString(), 'X', {duration: 3000}),
+        error => {
+          this.snackBar.open(error, 'X', {duration: 3000});
+          console.error(error);
+        },
         () => noop()
       );
     });
@@ -60,7 +65,7 @@ export class MainNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.imageUrlOfCurrentUser$ = this.authenticationService.getImageUrlOfCurrentUser$();
+    this.imageUrlOfCurrentUser$ = this.profileService.getPhotoUrlOfCurrentUserProfile$();
     this.isUserAuthenticated$ = this.authenticationService.getIsUserAuthenticated$();
   }
 
