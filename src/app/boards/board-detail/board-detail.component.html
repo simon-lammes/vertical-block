@@ -9,12 +9,15 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-action-row>
-      <mat-form-field class="board-detail-create-field">
-        <textarea matInput placeholder="Task name "></textarea>
-      </mat-form-field>
-      <button mat-button>Add Task</button>
+      <form [formGroup]="taskInputForm" (ngSubmit)="onSubmit(taskInputForm)" class="board-detail-create-field">
+        <mat-form-field>
+          <input placeholder="Type in your task" formControlName="taskInput" matInput>
+        </mat-form-field>
+        <button mat-button type="submit">Add Task</button>
+      </form>
     </mat-action-row>
   </mat-expansion-panel>
+
 
   <mat-expansion-panel>
     <mat-expansion-panel-header>
