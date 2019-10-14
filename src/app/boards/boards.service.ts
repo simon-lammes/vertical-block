@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Board, BoardBlueprint} from './board.model';
+import {Board, BoardBlueprint, Task} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {removeValueFromArray} from '../shared/universal-helper.functions';
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -115,5 +116,19 @@ export class BoardsService {
         return this.updateBoard(board);
       })
     ).toPromise();
+  }
+
+  saveTaskForBoard(board: Board, task: Task) {
+    return this.db.collection(`boards/${board.id}/tasks`).add(task);
+  }
+
+  getBoardById$(boardId: string): Observable<Board> {
+    return this.db.collection('boards').doc<Board>(boardId).snapshotChanges().pipe(
+      map(snapshot => {
+        const board = snapshot.payload.data() as Board;
+        board.id = snapshot.payload.id;
+        return board;
+      })
+    );
   }
 }

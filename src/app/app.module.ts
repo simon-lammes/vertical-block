@@ -37,6 +37,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {InviteMembersToBoardComponent} from './boards/invite-members-to-board/invite-members-to-board.component';
 import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
 import {StatsComponent} from './stats/stats.component';
+import {MatRippleModule} from "@angular/material/core";
 import {ProfileComponent} from './profile/profile.component';
 
 @NgModule({
@@ -64,7 +65,7 @@ import {ProfileComponent} from './profile/profile.component';
           component: AuthenticationComponent
         },
         {
-          path: 'board-detail',
+          path: 'boards/:boardId',
           component: BoardDetailComponent
         },
         {
@@ -97,7 +98,8 @@ import {ProfileComponent} from './profile/profile.component';
     MatSnackBarModule,
     MatAutocompleteModule,
     MatChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatRippleModule
   ],
   providers: [
     AngularFireAuth,

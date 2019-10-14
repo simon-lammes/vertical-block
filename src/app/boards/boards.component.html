@@ -22,7 +22,7 @@
 <div class="grid-container">
   <h1 class="mat-h1">Boards</h1>
   <mat-grid-list cols="2" rowHeight="250px">
-    <mat-grid-tile *ngFor="let board of boardsToWhichTheUserHasAccess$ | async" [colspan]="getColspanForBoard$() | async" [rowspan]="1">
+    <mat-grid-tile mat-ripple [routerLink]="[board.id]" *ngFor="let board of boardsToWhichTheUserHasAccess$ | async" [colspan]="getColspanForBoard$() | async" [rowspan]="1">
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>

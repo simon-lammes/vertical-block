@@ -11,3 +11,7 @@ export interface BoardBlueprint {
   title: string;
   description: string;
 }
+
+export interface Task {
+  name: string;
+}
