@@ -8,16 +8,21 @@
         Type in the tasks you want to do
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <mat-action-row>
-      <form [formGroup]="taskInputForm" (ngSubmit)="onSubmit(taskInputForm)" class="board-detail-create-field">
-        <mat-form-field>
-          <input placeholder="Type in your task" formControlName="taskInput" matInput>
-        </mat-form-field>
-        <button mat-button type="submit">Add Task</button>
-      </form>
-    </mat-action-row>
+    <form [formGroup]="taskInputForm" (ngSubmit)="onSubmit(taskInputForm)" class="board-detail-create-field">
+      <mat-form-field>
+        <input placeholder="Type in your task" formControlName="taskInput" matInput>
+      </mat-form-field>
+      <button mat-button type="submit">Add Task</button>
+    </form>
+    <mat-list>
+      <mat-list-item *ngFor="let todo of todos$ | async">
+        <h4>{{todo.name}}</h4>
+        <button mat-button (click)="deleteTask(todo)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
   </mat-expansion-panel>
-
 
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -28,8 +33,6 @@
         Show the tasks that are currently in progess
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <mat-action-row>
-    </mat-action-row>
   </mat-expansion-panel>
 
   <mat-expansion-panel>
@@ -41,7 +44,5 @@
         Show the tasks that are currently in progess
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <mat-action-row>
-    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

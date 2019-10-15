@@ -14,6 +14,7 @@ import {Observable} from "rxjs";
 export class BoardDetailComponent implements OnInit {
   taskInputForm: FormGroup;
   private board$: Observable<Board>;
+  private todos$: Observable<Task[]>;
 
   constructor(
     private boardService: BoardsService,
@@ -27,22 +28,37 @@ export class BoardDetailComponent implements OnInit {
     });
     this.board$ = this.activatedRoute.paramMap.pipe(
       switchMap(paramMap => {
-        return this.boardService.getBoardById$(paramMap.get("boardId"));
+        return this.boardService.getBoardById$(paramMap.get('boardId'));
       })
     );
+
+    this.todos$ = this.board$.pipe(
+      switchMap(board => {
+        return this.boardService.getTodosForBoard$(board);
+      })
+    );
+    this.todos$.subscribe(console.log);
   }
 
   onSubmit(taskInputForm: FormGroup) {
     console.log('Valid?', taskInputForm.valid);
     console.log('Aufgabe', taskInputForm.value.taskInput);
     const task: Task = {
-      name: taskInputForm.value.taskInput
+      name: taskInputForm.value.taskInput,
+      status: 'todo',
+      id: ''
     };
     this.board$.pipe(take(1)).subscribe(board => {
       console.log(board, task);
       this.boardService.saveTaskForBoard(board, task).then(r => {
         this.taskInputForm.reset();
       });
+    });
+  }
+
+  deleteTask(task: Task) {
+    this.board$.pipe(take(1)).subscribe(board => {
+      this.boardService.deleteTaskFromBoard(task, board);
     });
   }
 }

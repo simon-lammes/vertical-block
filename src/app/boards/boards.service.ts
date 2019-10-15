@@ -131,4 +131,22 @@ export class BoardsService {
       })
     );
   }
+
+  getTodosForBoard$(board: Board) {
+    return this.db.collection<Task>(`boards/${board.id}/tasks`, ref => ref
+      .where('status', '==', 'todo')
+      .orderBy('name'))
+      .snapshotChanges()
+      .pipe(
+        map(snapshots => snapshots.map(snapshot => {
+          const task = snapshot.payload.doc.data() as Task;
+          task.id = snapshot.payload.doc.id;
+          return task;
+        }))
+      );
+  }
+
+  deleteTaskFromBoard(task: Task, board: Board) {
+    return this.db.doc(`boards/${board.id}/tasks/${task.id}`).delete();
+  }
 }
