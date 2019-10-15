@@ -79,4 +79,14 @@ export class BoardsComponent implements OnInit {
   declineInvitationToBoard(board: Board) {
     this.boardsService.declineInvitationToBoard(board);
   }
+
+  /**
+   * This method stops event propagation, so that no further event listener is triggered.
+   * We do this because event listeners in parent elements would do interfering things with the event
+   * listeners in our child element. Therefore the child element can trigger this method and thereby prevent
+   * its parents from doing anything.
+   */
+  stopEventPropagation($event: MouseEvent) {
+    $event.stopPropagation();
+  }
 }

@@ -27,7 +27,10 @@
         <mat-card-header>
           <mat-card-title>
             {{board.title}}
-            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+            <!-- When the following button is clicked it stops event propagation
+             so that the click is not interpreted as click on the tile.
+             This prevents navigation to the board detail page. -->
+            <button (click)="stopEventPropagation($event)" mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
