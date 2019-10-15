@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Board, BoardBlueprint, Task} from './board.model';
+import {Board, BoardBlueprint, Task, TaskStatus} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
@@ -132,9 +132,9 @@ export class BoardsService {
     );
   }
 
-  getTodosForBoard$(board: Board) {
+  getTasksFromBoardByStatus$(board: Board, taskStatus: TaskStatus) {
     return this.db.collection<Task>(`boards/${board.id}/tasks`, ref => ref
-      .where('status', '==', 'todo')
+      .where('status', '==', taskStatus)
       .orderBy('name'))
       .snapshotChanges()
       .pipe(
@@ -148,5 +148,9 @@ export class BoardsService {
 
   deleteTaskFromBoard(task: Task, board: Board) {
     return this.db.doc(`boards/${board.id}/tasks/${task.id}`).delete();
+  }
+
+  updateTaskFromBoard(updatedTask: Task, board: Board) {
+    return this.db.doc(`boards/${board.id}/tasks/${updatedTask.id}`).set(updatedTask);
   }
 }

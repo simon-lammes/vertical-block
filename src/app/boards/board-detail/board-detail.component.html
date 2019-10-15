@@ -17,6 +17,9 @@
     <mat-list>
       <mat-list-item *ngFor="let todo of todos$ | async">
         <h4>{{todo.name}}</h4>
+        <button mat-button (click)="setTasksStatus(todo, 'progress')">
+          <mat-icon>move_to_inbox</mat-icon>
+        </button>
         <button mat-button (click)="deleteTask(todo)">
           <mat-icon>delete</mat-icon>
         </button>
@@ -33,6 +36,36 @@
         Show the tasks that are currently in progess
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let progress of progress$ | async">
+        <h4>{{progress.name}}</h4>
+        <button mat-button (click)="setTasksStatus(progress, 'review')">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-button (click)="deleteTask(progress)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Review
+      </mat-panel-title>
+      <mat-panel-description>
+        Show the tasks that got reviewed by a colleague
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let review of review$ | async">
+        <h4>{{review.name}}</h4>
+        <button mat-button (click)="setTasksStatus(review, 'done')">
+          <mat-icon>done_all</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
   </mat-expansion-panel>
 
   <mat-expansion-panel>
@@ -41,8 +74,14 @@
         Done
       </mat-panel-title>
       <mat-panel-description>
-        Show the tasks that are currently in progess
+        Show the tasks that are done
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let done of done$ | async">
+        <h4>{{done.name}}</h4>
+      </mat-list-item>
+    </mat-list>
   </mat-expansion-panel>
+
 </mat-accordion>

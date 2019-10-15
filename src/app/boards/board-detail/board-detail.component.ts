@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {BoardsService} from "../boards.service";
-import {Board, Task} from "../board.model";
+import {Board, Task, TaskStatus} from "../board.model";
 import {ActivatedRoute} from "@angular/router";
 import {switchMap, take} from "rxjs/operators";
 import {Observable} from "rxjs";
@@ -15,6 +15,9 @@ export class BoardDetailComponent implements OnInit {
   taskInputForm: FormGroup;
   private board$: Observable<Board>;
   private todos$: Observable<Task[]>;
+  private progress$: Observable<Task[]>;
+  private done$: Observable<Task[]>;
+  private review$: Observable<Task[]>;
 
   constructor(
     private boardService: BoardsService,
@@ -31,13 +34,26 @@ export class BoardDetailComponent implements OnInit {
         return this.boardService.getBoardById$(paramMap.get('boardId'));
       })
     );
-
     this.todos$ = this.board$.pipe(
       switchMap(board => {
-        return this.boardService.getTodosForBoard$(board);
+        return this.boardService.getTasksFromBoardByStatus$(board, 'todo');
       })
     );
-    this.todos$.subscribe(console.log);
+    this.progress$ = this.board$.pipe(
+      switchMap(board => {
+        return this.boardService.getTasksFromBoardByStatus$(board, 'progress');
+      })
+    );
+    this.done$ = this.board$.pipe(
+      switchMap(board => {
+        return this.boardService.getTasksFromBoardByStatus$(board, 'done');
+      })
+    );
+    this.review$ = this.board$.pipe(
+      switchMap(board => {
+        return this.boardService.getTasksFromBoardByStatus$(board, 'review');
+      })
+    );
   }
 
   onSubmit(taskInputForm: FormGroup) {
@@ -59,6 +75,13 @@ export class BoardDetailComponent implements OnInit {
   deleteTask(task: Task) {
     this.board$.pipe(take(1)).subscribe(board => {
       this.boardService.deleteTaskFromBoard(task, board);
+    });
+  }
+
+  setTasksStatus(task: Task, newStatus: TaskStatus) {
+    this.board$.pipe(take(1)).subscribe(board => {
+      task.status = newStatus;
+      this.boardService.updateTaskFromBoard(task, board);
     });
   }
 }

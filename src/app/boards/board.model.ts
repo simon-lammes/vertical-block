@@ -14,6 +14,8 @@ export interface BoardBlueprint {
 
 export interface Task {
   name: string;
-  status: 'todo' | 'progess' | 'done';
+  status: TaskStatus;
   id: string;
 }
+
+export type TaskStatus = 'todo' | 'progress' | 'done' | 'review';
