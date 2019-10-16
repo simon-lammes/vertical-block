@@ -15,8 +15,11 @@ import {map, startWith, take, tap} from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
-  // When the user changes his profile photo URL to something different than provided by firebase we want
-  // to give him the option to reset his photo URL.
+  /**
+   * When the user changes his profile photo URL to something different than provided by firebase we want
+   * to give him the option to reset his photo URL. When firebase provides no image,
+   * the photo url can certainly not be reset.
+   */
   photoUrlCouldBeReset$: Observable<boolean>;
 
   constructor(
@@ -24,7 +27,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.profileService.getProfileOfCurrentUser$().pipe(untilDestroyed(this)).subscribe(profile => {
@@ -47,7 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       ).pipe(
         map(([changes, providedPhotoURL]) => {
           console.log(changes, providedPhotoURL);
-          return changes.photoURL !== providedPhotoURL;
+          return providedPhotoURL && changes.photoURL !== providedPhotoURL;
         })
       );
     });
@@ -81,10 +85,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
       take(1),
       tap(photoURL => {
         this.profileForm.patchValue({photoURL});
+        this.profileForm.markAsDirty();
       })
     ).toPromise().catch(error => {
       this.snackBar.open(error, 'X', {duration: 4000});
       console.error(error);
+    });
+  }
+
+  async resetProfileForm() {
+    const profile = await this.profileService.getProfileOfCurrentUserSnapshot();
+    this.profileForm.reset({
+      email: profile.email,
+      displayName: profile.displayName,
+      photoURL: profile.photoURL
     });
   }
 }

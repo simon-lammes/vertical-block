@@ -19,7 +19,8 @@
         cdkAutosizeMaxRows="5"></textarea>
     </mat-form-field>
     <button mat-button type="button" *ngIf="photoUrlCouldBeReset$ | async" (click)="resetPhotoURL()">Reset photo URL</button>
-    <button mat-raised-button color="accent" type="submit">Update</button>
+    <button mat-button type="button" *ngIf="profileForm.dirty" (click)="resetProfileForm()">Cancel</button>
+    <button *ngIf="profileForm.dirty && profileForm.valid" mat-raised-button color="accent" type="submit">Update</button>
   </form>
   <mat-card *ngIf="profileForm.value.photoURL">
     <mat-card-title>
