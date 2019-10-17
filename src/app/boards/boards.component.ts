@@ -44,24 +44,24 @@ export class BoardsComponent implements OnInit {
   }
 
   addMemberToBoard(board: Board) {
-    const dialogRef = this.dialog.open(InviteMembersToBoardComponent, {
+    const dialogRef = this.dialog.open(AddMemberToBoardComponent, {
       width: '450px',
       data: {
         board,
-        membersToInvite: []
+        membersToAdd: []
       }
     });
     dialogRef.afterClosed().subscribe(data => {
-      if (!data || !data.membersToInvite) {
+      if (!data || !data.membersToAdd) {
         // Obviously there are no members to add.
         return;
       }
-      const membersToInvite: Profile[] = data.membersToInvite;
-      membersToInvite.forEach(memberToInvite => {
-        if (board.idsOfInvitedUsers.includes(memberToInvite.uid) || board.memberIds.includes(memberToInvite.uid)) {
-          throw console.error('Tried to invite a member id to board although it is already part of the of board or already invited.');
+      const membersToAdd: Profile[] = data.membersToAdd;
+      membersToAdd.forEach(memberToAdd => {
+        if (board.idsOfInvitedUsers.includes(memberToAdd.uid) || board.memberIds.includes(memberToAdd.uid)) {
+          throw console.error('Tried to add a member id to board although he is already part of the of board.');
         }
-        board.idsOfInvitedUsers.push(memberToInvite.uid);
+        board.memberIds.push(memberToAdd.uid);
       });
       this.boardsService.updateBoard(board);
     });

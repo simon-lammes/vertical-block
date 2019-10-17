@@ -34,11 +34,11 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {InviteMembersToBoardComponent} from './boards/invite-members-to-board/invite-members-to-board.component';
 import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
 import {StatsComponent} from './stats/stats.component';
-import {MatRippleModule} from "@angular/material/core";
+import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
+import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +50,8 @@ import {ProfileComponent} from './profile/profile.component';
     BoardDetailComponent,
     StatsComponent,
     AuthenticationComponent,
-    InviteMembersToBoardComponent,
-    ProfileComponent
+    ProfileComponent,
+    AddMemberToBoardComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -108,7 +108,7 @@ import {ProfileComponent} from './profile/profile.component';
   ],
   entryComponents: [
     CreateBoardComponent,
-    InviteMembersToBoardComponent,
+    AddMemberToBoardComponent,
     MatSnackBarContainer
   ],
   bootstrap: [AppComponent]
