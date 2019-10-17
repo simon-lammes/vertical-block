@@ -35,10 +35,14 @@ import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
+import {InviteMembersToBoardComponent} from './boards/invite-members-to-board/invite-members-to-board.component';
+import {BoardTasksComponent} from './boards/board-tasks/board-tasks.component';
 import {StatsComponent} from './stats/stats.component';
 import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
 import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
+import { BoardTabsComponent } from './boards/board-tabs/board-tabs.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -47,9 +51,12 @@ import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member
     BoardsComponent,
     CreateBoardComponent,
     AuthenticationComponent,
-    BoardDetailComponent,
+    BoardTasksComponent,
     StatsComponent,
     AuthenticationComponent,
+    InviteMembersToBoardComponent,
+    ProfileComponent,
+    BoardTabsComponent
     ProfileComponent,
     AddMemberToBoardComponent
   ],
@@ -66,7 +73,7 @@ import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member
         },
         {
           path: 'boards/:boardId',
-          component: BoardDetailComponent
+          component: BoardTabsComponent
         },
         {
           path: 'profile',
@@ -99,7 +106,8 @@ import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member
     MatAutocompleteModule,
     MatChipsModule,
     MatExpansionModule,
-    MatRippleModule
+    MatRippleModule,
+    MatTabsModule
   ],
   providers: [
     AngularFireAuth,

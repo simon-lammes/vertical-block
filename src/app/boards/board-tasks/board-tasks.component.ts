@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {BoardsService} from "../boards.service";
 import {Board, Task, TaskStatus} from "../board.model";
@@ -7,13 +7,13 @@ import {switchMap, take} from "rxjs/operators";
 import {Observable} from "rxjs";
 
 @Component({
-  selector: 'app-board-detail',
-  templateUrl: './board-detail.component.html',
-  styleUrls: ['./board-detail.component.scss']
+  selector: 'app-board-tasks',
+  templateUrl: './board-tasks.component.html',
+  styleUrls: ['./board-tasks.component.scss']
 })
-export class BoardDetailComponent implements OnInit {
+export class BoardTasksComponent implements OnInit {
   taskInputForm: FormGroup;
-  private board$: Observable<Board>;
+  @Input() board$: Observable<Board>;
   private todos$: Observable<Task[]>;
   private progress$: Observable<Task[]>;
   private done$: Observable<Task[]>;
@@ -29,11 +29,7 @@ export class BoardDetailComponent implements OnInit {
     this.taskInputForm = new FormGroup({
       taskInput: new FormControl('')
     });
-    this.board$ = this.activatedRoute.paramMap.pipe(
-      switchMap(paramMap => {
-        return this.boardService.getBoardById$(paramMap.get('boardId'));
-      })
-    );
+
     this.todos$ = this.board$.pipe(
       switchMap(board => {
         return this.boardService.getTasksFromBoardByStatus$(board, 'todo');
