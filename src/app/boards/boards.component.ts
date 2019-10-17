@@ -5,7 +5,7 @@ import {BoardsService} from './boards.service';
 import {Observable} from 'rxjs';
 import {Board} from './board.model';
 import {MatDialog} from '@angular/material';
-import {InviteMembersToBoardComponent} from './invite-members-to-board/invite-members-to-board.component';
+import {AddMemberToBoardComponent} from './add-member-to-board/add-member-to-board.component';
 import {Profile} from '../profile/profile.model';
 
 @Component({
@@ -70,14 +70,6 @@ export class BoardsComponent implements OnInit {
   getColspanForBoard$() {
     // A board should take up more columns if the device is small.
     return this.isHandset$.pipe(map(isHandset => isHandset ? 2 : 1));
-  }
-
-  acceptInvitationToBoard(board: Board) {
-    this.boardsService.acceptInvitationToBoard(board);
-  }
-
-  declineInvitationToBoard(board: Board) {
-    this.boardsService.declineInvitationToBoard(board);
   }
 
   /**

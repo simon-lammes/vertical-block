@@ -3,8 +3,7 @@ import {Board, BoardBlueprint, Task, TaskStatus} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {removeValueFromArray} from '../shared/universal-helper.functions';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -83,39 +82,6 @@ export class BoardsService {
 
   updateBoard(newBoard: Board) {
     this.db.doc(`boards/${newBoard.id}`).set(newBoard);
-  }
-
-  acceptInvitationToBoard(board: Board) {
-    this.authenticationService.getIdOfCurrentUser$().pipe(
-      take(1),
-      tap(userId => {
-        if (!userId) {
-          throw new Error('User should be authenticated to accept invitations.');
-        }
-        if (!board.idsOfInvitedUsers.includes(userId)) {
-          throw new Error('User cannot accept invitation when no invitation exists.');
-        }
-        removeValueFromArray(board.idsOfInvitedUsers, userId);
-        board.memberIds.push(userId);
-        return this.updateBoard(board);
-      })
-    ).toPromise();
-  }
-
-  declineInvitationToBoard(board: Board) {
-    this.authenticationService.getIdOfCurrentUser$().pipe(
-      take(1),
-      tap(userId => {
-        if (!userId) {
-          throw new Error('User should be authenticated to accept invitations.');
-        }
-        if (!board.idsOfInvitedUsers.includes(userId)) {
-          throw new Error('User cannot decline invitation when no invitation exists.');
-        }
-        removeValueFromArray(board.idsOfInvitedUsers, userId);
-        return this.updateBoard(board);
-      })
-    ).toPromise();
   }
 
   saveTaskForBoard(board: Board, task: Task) {
