@@ -26,7 +26,8 @@ import {
   MatInputModule,
   MatSnackBar,
   MatSnackBarContainer,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatTabsModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthenticationComponent} from './authentication/authentication.component';
@@ -34,15 +35,12 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
-import {InviteMembersToBoardComponent} from './boards/invite-members-to-board/invite-members-to-board.component';
 import {BoardTasksComponent} from './boards/board-tasks/board-tasks.component';
 import {StatsComponent} from './stats/stats.component';
 import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
 import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
-import { BoardTabsComponent } from './boards/board-tabs/board-tabs.component';
-import {MatTabsModule} from "@angular/material/tabs";
+import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
 
 @NgModule({
   declarations: [
@@ -54,9 +52,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     BoardTasksComponent,
     StatsComponent,
     AuthenticationComponent,
-    InviteMembersToBoardComponent,
     ProfileComponent,
-    BoardTabsComponent
+    BoardTabsComponent,
     ProfileComponent,
     AddMemberToBoardComponent
   ],
