@@ -1,16 +1,12 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Your Boards</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">
-        <mat-icon>dashboard</mat-icon>
-         Dashboard
-      </a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item *ngFor="let board of boardsToWhichTheUserHasAccess$ | async"
+         [href]="'/boards/' + board.id">{{board.title}}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -23,14 +19,18 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+      <a mat-button [href]="'/boards'">Boards</a>
       <button mat-button [matMenuTriggerFor]="actions">Actions</button>
       <mat-menu #actions="matMenu">
         <button mat-menu-item (click)="createBoard()">Create board</button>
       </mat-menu>
       <span class="fill-empty-space"></span>
-      <img [mat-menu-trigger-for]="userActions" *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl" alt="Avatar" class="avatar">
+      <img [mat-menu-trigger-for]="userActions" *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl"
+           alt="Avatar" class="avatar">
       <!-- The following image is a fallback for when the user is logged in but has no image. -->
-      <img [mat-menu-trigger-for]="userActions" *ngIf="(isUserAuthenticated$ | async) && !(imageUrlOfCurrentUser$ | async)" src="../../assets/material-icons/account_circle.svg" alt="Avatar" class="avatar">
+      <img [mat-menu-trigger-for]="userActions"
+           *ngIf="(isUserAuthenticated$ | async) && !(imageUrlOfCurrentUser$ | async)"
+           src="../../assets/material-icons/account_circle.svg" alt="Avatar" class="avatar">
       <mat-menu #userActions="matMenu">
         <button mat-menu-item [routerLink]="['profile']">
           <mat-icon>perm_identity</mat-icon>

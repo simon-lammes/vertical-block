@@ -21,7 +21,6 @@ export class BoardsComponent implements OnInit {
 
   boardsToWhichTheUserHasAccess$: Observable<Board[]>;
   boardsToWhichTheUserHasBeenInvited$: Observable<Board[]>;
-  hasUserBeenInvitedToBoards$: Observable<boolean>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -32,7 +31,6 @@ export class BoardsComponent implements OnInit {
   ngOnInit(): void {
     this.boardsToWhichTheUserHasAccess$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
     this.boardsToWhichTheUserHasBeenInvited$ = this.boardsService.getAllBoardsToWhichTheUserHasBeenInvited$();
-    this.hasUserBeenInvitedToBoards$ = this.boardsService.hasUserBeenInvitedToBoards$();
   }
 
   removeBoard($event: MouseEvent, board: Board) {

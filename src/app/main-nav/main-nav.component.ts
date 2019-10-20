@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {noop, Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {BoardBlueprint} from '../boards/board.model';
+import {Board, BoardBlueprint} from '../boards/board.model';
 import {CreateBoardComponent} from '../boards/create-board/create-board.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {BoardsService} from '../boards/boards.service';
@@ -23,9 +23,9 @@ export class MainNavComponent implements OnInit {
       map(result => result.matches),
       shareReplay()
     );
-
   imageUrlOfCurrentUser$: Observable<string>;
   isUserAuthenticated$: Observable<boolean>;
+  boardsToWhichTheUserHasAccess$: Observable<Board[]>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -34,7 +34,7 @@ export class MainNavComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar,
-    private profileService: ProfileService
+    private profileService: ProfileService,
   ) {
   }
 
@@ -67,6 +67,8 @@ export class MainNavComponent implements OnInit {
   ngOnInit(): void {
     this.imageUrlOfCurrentUser$ = this.profileService.getPhotoUrlOfCurrentUserProfile$();
     this.isUserAuthenticated$ = this.authenticationService.getIsUserAuthenticated$();
+    this.boardsToWhichTheUserHasAccess$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
+    this.boardsToWhichTheUserHasAccess$.subscribe(console.log);
   }
 
   logout() {
