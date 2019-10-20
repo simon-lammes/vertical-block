@@ -11,7 +11,9 @@
 }
 
 .mat-toolbar.mat-primary {
-  position: sticky;
+  // With a position of sticky the toolbar could overlap with mat-tabs below.
+  // A position of static does not have this problem.
+  position: static;
   top: 0;
   z-index: 1;
 }

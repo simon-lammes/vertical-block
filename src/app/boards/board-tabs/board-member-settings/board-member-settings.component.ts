@@ -20,7 +20,7 @@ export class BoardMemberSettingsComponent implements OnInit {
   filteredPotentialNewMembers$: Observable<Profile[]>;
   searchTerm$: Observable<string>;
   userIsWaitingForSearchResults$: BehaviorSubject<boolean>;
-  displayedColumns: string[] = ['profilePicture', 'name', 'email', 'role', 'actions'];
+  displayedColumns: string[] = ['profile-picture', 'name', 'email', 'role', 'actions'];
 
   get newMemberControl(): AbstractControl {
     return this.memberForm.controls.newMember;

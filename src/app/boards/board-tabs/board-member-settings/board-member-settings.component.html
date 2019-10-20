@@ -1,6 +1,6 @@
 <form [formGroup]="memberForm" (ngSubmit)="addNewMember()">
   <mat-form-field>
-    <input type="text" placeholder="Search by E-Mail" matInput formControlName="newMember" [matAutocomplete]="auto">
+    <input type="text" placeholder="Add member by E-Mail" matInput formControlName="newMember" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="getStringRepresentationOfProfile">
       <mat-option *ngFor="let profile of filteredPotentialNewMembers$ | async" [value]="profile">
         <img *ngIf="profile.photoURL" [src]="profile.photoURL" class="avatar" alt="">
@@ -13,7 +13,7 @@
 </form>
 <mat-table [dataSource]="boardMembers$ | async">
   <!-- Position Column -->
-  <ng-container matColumnDef="profilePicture">
+  <ng-container matColumnDef="profile-picture">
     <mat-header-cell *matHeaderCellDef>Profile Picture</mat-header-cell>
     <mat-cell *matCellDef="let element">
       <img *ngIf="element.photoURL" [src]="element.photoURL" class="rounded avatar" alt="">

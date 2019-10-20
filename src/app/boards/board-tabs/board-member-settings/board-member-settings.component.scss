@@ -4,6 +4,10 @@ img.avatar {
   vertical-align: middle;
 }
 
+form {
+  margin: 6pt 12pt;
+}
+
 img.rounded.avatar {
   border-radius: 50%;
 }
@@ -15,4 +19,16 @@ form mat-form-field {
 
 mat-spinner {
   display: inline-block;
+}
+
+.mat-column-actions, .mat-column-profile-picture, .mat-column-role {
+  max-width: 40pt;
+}
+
+.mat-column-email {
+  min-width: auto !important;
+}
+
+mat-table {
+  min-width: 500pt;
 }
