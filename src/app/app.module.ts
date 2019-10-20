@@ -24,9 +24,11 @@ import {
   MatExpansionModule,
   MatFormFieldModule,
   MatInputModule,
+  MatProgressSpinnerModule,
   MatSnackBar,
   MatSnackBarContainer,
   MatSnackBarModule,
+  MatTableModule,
   MatTabsModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -39,8 +41,8 @@ import {BoardTasksComponent} from './boards/board-tasks/board-tasks.component';
 import {StatsComponent} from './stats/stats.component';
 import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
-import {AddMemberToBoardComponent} from './boards/add-member-to-board/add-member-to-board.component';
 import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
+import {BoardMemberSettingsComponent} from './boards/board-tabs/board-member-settings/board-member-settings.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,7 @@ import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
     ProfileComponent,
     BoardTabsComponent,
     ProfileComponent,
-    AddMemberToBoardComponent
+    BoardMemberSettingsComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -104,7 +106,9 @@ import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
     MatChipsModule,
     MatExpansionModule,
     MatRippleModule,
-    MatTabsModule
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatTableModule
   ],
   providers: [
     AngularFireAuth,
@@ -113,7 +117,6 @@ import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
   ],
   entryComponents: [
     CreateBoardComponent,
-    AddMemberToBoardComponent,
     MatSnackBarContainer
   ],
   bootstrap: [AppComponent]

@@ -1,27 +1,15 @@
 <div class="grid-container">
   <h1 class="mat-h1">Boards</h1>
   <mat-grid-list cols="2" rowHeight="250px">
-    <mat-grid-tile mat-ripple [routerLink]="[board.id]" *ngFor="let board of boardsToWhichTheUserHasAccess$ | async" [colspan]="getColspanForBoard$() | async" [rowspan]="1">
+    <mat-grid-tile mat-ripple [routerLink]="[board.id]" *ngFor="let board of boardsToWhichTheUserHasAccess$ | async"
+                   [colspan]="getColspanForBoard$() | async" [rowspan]="1">
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
             {{board.title}}
-            <!-- When the following button is clicked it stops event propagation
-             so that the click is not interpreted as click on the tile.
-             This prevents navigation to the board detail page. -->
-            <button (click)="stopEventPropagation($event)" mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
+            <button (click)="removeBoard($event, board)" mat-icon-button class="delete-button">
+              <mat-icon>delete</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item (click)="addMemberToBoard(board)">
-                <mat-icon>person_add</mat-icon>
-                Add Person
-              </button>
-              <button mat-menu-item (click)="removeBoard(board)">
-                <mat-icon>delete</mat-icon>
-                Delete
-              </button>
-            </mat-menu>
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">

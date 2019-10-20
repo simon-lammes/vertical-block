@@ -1,0 +1,18 @@
+img.avatar {
+  height: 25pt;
+  margin-right: 5pt;
+  vertical-align: middle;
+}
+
+img.rounded.avatar {
+  border-radius: 50%;
+}
+
+form mat-form-field {
+  width: 100%;
+  max-width: 200pt;
+}
+
+mat-spinner {
+  display: inline-block;
+}

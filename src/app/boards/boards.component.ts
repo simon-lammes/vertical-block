@@ -4,9 +4,6 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {BoardsService} from './boards.service';
 import {Observable} from 'rxjs';
 import {Board} from './board.model';
-import {MatDialog} from '@angular/material';
-import {AddMemberToBoardComponent} from './add-member-to-board/add-member-to-board.component';
-import {Profile} from '../profile/profile.model';
 
 @Component({
   selector: 'app-boards',
@@ -28,8 +25,7 @@ export class BoardsComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private boardsService: BoardsService,
-    private dialog: MatDialog
+    private boardsService: BoardsService
   ) {
   }
 
@@ -39,46 +35,17 @@ export class BoardsComponent implements OnInit {
     this.hasUserBeenInvitedToBoards$ = this.boardsService.hasUserBeenInvitedToBoards$();
   }
 
-  removeBoard(board: Board) {
+  removeBoard($event: MouseEvent, board: Board) {
     this.boardsService.removeBoard(board);
-  }
-
-  addMemberToBoard(board: Board) {
-    const dialogRef = this.dialog.open(AddMemberToBoardComponent, {
-      width: '450px',
-      data: {
-        board,
-        membersToAdd: []
-      }
-    });
-    dialogRef.afterClosed().subscribe(data => {
-      if (!data || !data.membersToAdd) {
-        // Obviously there are no members to add.
-        return;
-      }
-      const membersToAdd: Profile[] = data.membersToAdd;
-      membersToAdd.forEach(memberToAdd => {
-        if (board.idsOfInvitedUsers.includes(memberToAdd.uid) || board.memberIds.includes(memberToAdd.uid)) {
-          throw console.error('Tried to add a member id to board although he is already part of the of board.');
-        }
-        board.memberIds.push(memberToAdd.uid);
-      });
-      this.boardsService.updateBoard(board);
-    });
+    // This method stops event propagation, so that no further event listener is triggered.
+    // We do this because event listeners in parent elements would do interfering things with the event
+    // listeners in our child element. Therefore the child element can trigger this method and thereby prevent
+    // its parents from doing anything.
+    $event.stopPropagation();
   }
 
   getColspanForBoard$() {
     // A board should take up more columns if the device is small.
     return this.isHandset$.pipe(map(isHandset => isHandset ? 2 : 1));
-  }
-
-  /**
-   * This method stops event propagation, so that no further event listener is triggered.
-   * We do this because event listeners in parent elements would do interfering things with the event
-   * listeners in our child element. Therefore the child element can trigger this method and thereby prevent
-   * its parents from doing anything.
-   */
-  stopEventPropagation($event: MouseEvent) {
-    $event.stopPropagation();
   }
 }

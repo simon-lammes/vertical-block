@@ -4,6 +4,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Observable} from 'rxjs';
+import {Profile} from '../profile/profile.model';
+import {removeValueFromArray} from '../shared/universal-helper.functions';
 
 @Injectable({
   providedIn: 'root'
@@ -80,10 +82,6 @@ export class BoardsService {
     this.db.collection('boards').doc(board.id).delete();
   }
 
-  updateBoard(newBoard: Board) {
-    this.db.doc(`boards/${newBoard.id}`).set(newBoard);
-  }
-
   saveTaskForBoard(board: Board, task: Task) {
     return this.db.collection(`boards/${board.id}/tasks`).add(task);
   }
@@ -96,6 +94,14 @@ export class BoardsService {
         return board;
       })
     );
+  }
+
+  addMemberToBoard(newMember: Profile, board: Board): Promise<any> {
+    if (!board.memberIds) {
+      board.memberIds = [];
+    }
+    board.memberIds.push(newMember.uid);
+    return this.updateBoard(board);
   }
 
   getTasksFromBoardByStatus$(board: Board, taskStatus: TaskStatus) {
@@ -118,5 +124,14 @@ export class BoardsService {
 
   updateTaskFromBoard(updatedTask: Task, board: Board) {
     return this.db.doc(`boards/${board.id}/tasks/${updatedTask.id}`).set(updatedTask);
+  }
+
+  private updateBoard(newBoard: Board) {
+    return this.db.doc(`boards/${newBoard.id}`).set(newBoard);
+  }
+
+  removeMemberFromBoard(member: Profile, board: Board): Promise<any> {
+    board.memberIds = removeValueFromArray(board.memberIds, member.uid);
+    return this.updateBoard(board);
   }
 }
