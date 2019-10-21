@@ -1,7 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-
 /* This styles the authentication component properly */
 @import '~firebaseui/dist/firebaseui.css';
+@import '~@angular/material/theming';
+
+/* Variables */
+$app-warn: mat-palette($mat-red);
+$warn: mat-color($app-warn);
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -36,30 +36,6 @@ export class BoardsService {
     );
   }
 
-  getAllBoardsToWhichTheUserHasBeenInvited$() {
-    return this.authenticationService.getIdOfCurrentUser$().pipe(
-      switchMap(userId => {
-        return this.db.collection<Board>('boards', ref => ref
-          .where('idsOfInvitedUsers', 'array-contains', userId)
-          .orderBy('title'))
-          .snapshotChanges()
-          .pipe(
-            map(actions => actions.map(a => {
-              const board = a.payload.doc.data() as Board;
-              board.id = a.payload.doc.id;
-              return board;
-            }))
-          );
-      })
-    );
-  }
-
-  hasUserBeenInvitedToBoards$() {
-    return this.getAllBoardsToWhichTheUserHasBeenInvited$().pipe(
-      map(boardsToWhichTheUserHasBeenInvited => boardsToWhichTheUserHasBeenInvited.length > 0)
-    );
-  }
-
   createNewBoard(boardBlueprint: BoardBlueprint) {
     return this.authenticationService.getIdOfCurrentUser$().pipe(
       take(1),

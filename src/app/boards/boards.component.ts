@@ -11,16 +11,13 @@ import {Board} from './board.model';
   styleUrls: ['./boards.component.scss']
 })
 export class BoardsComponent implements OnInit {
-
   // We need to know whether the client's device is very small.
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
-
   boardsToWhichTheUserHasAccess$: Observable<Board[]>;
-  boardsToWhichTheUserHasBeenInvited$: Observable<Board[]>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -30,7 +27,6 @@ export class BoardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.boardsToWhichTheUserHasAccess$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
-    this.boardsToWhichTheUserHasBeenInvited$ = this.boardsService.getAllBoardsToWhichTheUserHasBeenInvited$();
   }
 
   removeBoard($event: MouseEvent, board: Board) {

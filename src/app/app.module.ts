@@ -15,7 +15,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
-import {CreateBoardComponent} from './boards/create-board/create-board.component';
+import {CreateBoardDialogComponent} from './boards/create-board-dialog/create-board-dialog.component';
 import {
   MatAutocompleteModule,
   MatCheckboxModule,
@@ -43,13 +43,14 @@ import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
 import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
 import {BoardMemberSettingsComponent} from './boards/board-tabs/board-member-settings/board-member-settings.component';
+import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     BoardsComponent,
-    CreateBoardComponent,
+    CreateBoardDialogComponent,
     AuthenticationComponent,
     BoardTasksComponent,
     StatsComponent,
@@ -108,7 +109,20 @@ import {BoardMemberSettingsComponent} from './boards/board-tabs/board-member-set
     MatRippleModule,
     MatTabsModule,
     MatProgressSpinnerModule,
-    MatTableModule
+    MatTableModule,
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {
+          gfm: true,
+          tables: true,
+          breaks: false,
+          pedantic: false,
+          smartLists: true,
+          smartypants: false,
+        },
+      },
+    })
   ],
   providers: [
     AngularFireAuth,
@@ -116,7 +130,7 @@ import {BoardMemberSettingsComponent} from './boards/board-tabs/board-member-set
     AngularFirestore
   ],
   entryComponents: [
-    CreateBoardComponent,
+    CreateBoardDialogComponent,
     MatSnackBarContainer
   ],
   bootstrap: [AppComponent]

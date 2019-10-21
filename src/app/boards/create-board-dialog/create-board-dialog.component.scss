@@ -1,0 +1,37 @@
+@import "src/styles";
+
+.error {
+  background-color: $warn;
+  padding: 1em;
+  border-radius: 10pt;
+}
+
+button.close {
+  float: right;
+}
+
+h1 {
+  // This makes the h1 tag not take up the whole width so that the close button can be on the same height.
+  display: inline-block;
+}
+
+div.input-field-wrapper {
+  min-width: 150px;
+  max-width: 350px;
+  width: 100%;
+}
+
+div.input-field-wrapper mat-form-field {
+  width: 100%;
+}
+
+mat-card {
+  margin: 8pt;
+  flex: 1 1 auto;
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8pt;
+}

@@ -13,7 +13,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>{{board.description}}</div>
+          <markdown [data]="board.description"></markdown>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

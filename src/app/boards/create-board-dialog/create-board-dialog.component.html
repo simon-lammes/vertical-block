@@ -1,0 +1,43 @@
+<form [formGroup]="boardForm" (ngSubmit)="createNewBoard()">
+  <h1 mat-dialog-title>Create New Board</h1>
+  <button (click)="cancel()" type="button" mat-flat-button class="close">
+    <mat-icon>clear</mat-icon>
+  </button>
+  <mat-dialog-content>
+    <div class="input-field-wrapper">
+      <mat-form-field>
+        <input matInput placeholder="Title" formControlName="title" required>
+        <mat-error *ngIf="titleControl.hasError('required') && titleControl.touched">
+          A title is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  placeholder="Description"
+                  formControlName="description"></textarea>
+        <mat-hint>Markdown format is supported.</mat-hint>
+      </mat-form-field>
+      <div *ngIf="errorWhichOccurred" class="error">
+        An error has occurred: {{errorWhichOccurred.message}}
+      </div>
+    </div>
+    <mat-card>
+      <mat-card-title>
+        {{titleControl.value}}
+      </mat-card-title>
+      <mat-card-subtitle>
+        Preview
+      </mat-card-subtitle>
+      <mat-card-content>
+        <markdown [data]="descriptionControl.value"></markdown>
+      </mat-card-content>
+    </mat-card>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-button type="submit" [disabled]="boardForm.invalid">Create</button>
+  </mat-dialog-actions>
+</form>
+
