@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {ProfileService} from '../../../profile/profile.service';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Profile, validateProfile} from '../../../profile/profile.model';
-import {debounceTime, filter, map, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
+import {debounceTime, map, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {environment} from '../../../../environments/environment';
 import {Board} from '../../board.model';
 import {BoardsService} from '../../boards.service';
@@ -44,12 +44,16 @@ export class BoardMemberSettingsComponent implements OnInit {
       // The first search term is an empty string, so the observable should emit
       // an empty string, even if the user has not even entered something.
       startWith(''),
-      // When the user clicks on an autocomplete proposal, the new member control
+      // When the user clicks on an autocomplete proposal, the search field
       // does not hold a string value like usual but instead a profile object.
-      // The searchTerm$ observable should only contain the strings which
-      // the user typed in. Therefore, we filter the profile objects out.
-      filter(value => {
-        return typeof value === 'string';
+      // In that case the displayed search term in the input field is equal to what
+      // the getStringRepresentationOfProfile provides for the picked profile.
+      // Our searchTerm$ observable needs to reflect that by also emitting the
+      // string representation value. Otherwise this searchTerm$ observable would
+      // not reflect what is actually displayed in the search field.
+      map(value => {
+        const stringRepresentation = this.getStringRepresentationOfProfile(value);
+        return stringRepresentation ? stringRepresentation : value;
       })
     );
     this.board$ = this.boardService.getBoardById$(this.data.boardId);
