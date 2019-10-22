@@ -19,3 +19,13 @@
 .dashboard-card-content {
   text-align: center;
 }
+
+// This makes the inner part of a dashboard card have a padding to the edges of the card and still be scrollable.
+div.dashboard-card-scrolling-layer {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  overflow: scroll;
+}

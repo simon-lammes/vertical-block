@@ -1,20 +1,22 @@
 <div class="grid-container">
   <h1 class="mat-h1">Boards</h1>
-  <mat-grid-list cols="2" rowHeight="250px">
+  <mat-grid-list cols="2" rowHeight="350px">
     <mat-grid-tile mat-ripple [routerLink]="[board.id]" *ngFor="let board of boardsToWhichTheUserHasAccess$ | async"
                    [colspan]="getColspanForBoard$() | async" [rowspan]="1">
       <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{board.title}}
-            <button (click)="removeBoard($event, board)" mat-icon-button class="delete-button">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <markdown [data]="board.description"></markdown>
-        </mat-card-content>
+        <div class="dashboard-card-scrolling-layer">
+          <mat-card-header>
+            <mat-card-title>
+              {{board.title}}
+              <button (click)="removeBoard($event, board)" mat-icon-button class="delete-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <markdown [data]="board.description"></markdown>
+          </mat-card-content>
+        </div>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>

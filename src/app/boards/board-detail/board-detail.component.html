@@ -1,4 +1,13 @@
+<mat-toolbar color="accent">
+  <button mat-button [matMenuTriggerFor]="actions">
+    <mat-icon>settings</mat-icon>
+  </button>
+  <mat-menu #actions="matMenu">
+    <button mat-menu-item (click)="openMemberSettingsDialog()">Member Settings</button>
+  </mat-menu>
+</mat-toolbar>
 <mat-accordion>
+  <!-- To do -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -26,7 +35,7 @@
       </mat-list-item>
     </mat-list>
   </mat-expansion-panel>
-
+  <!-- In Progress -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -48,7 +57,7 @@
       </mat-list-item>
     </mat-list>
   </mat-expansion-panel>
-
+  <!-- Review -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -67,7 +76,7 @@
       </mat-list-item>
     </mat-list>
   </mat-expansion-panel>
-
+  <!-- Done -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -83,5 +92,4 @@
       </mat-list-item>
     </mat-list>
   </mat-expansion-panel>
-
 </mat-accordion>

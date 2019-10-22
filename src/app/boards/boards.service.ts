@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Board, BoardBlueprint, Task, TaskStatus} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import {map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Observable} from 'rxjs';
 import {Profile} from '../profile/profile.model';
@@ -68,7 +68,8 @@ export class BoardsService {
         const board = snapshot.payload.data() as Board;
         board.id = snapshot.payload.id;
         return board;
-      })
+      }),
+      shareReplay(1)
     );
   }
 

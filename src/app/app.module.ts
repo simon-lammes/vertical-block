@@ -37,13 +37,13 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {BoardTasksComponent} from './boards/board-tasks/board-tasks.component';
 import {StatsComponent} from './stats/stats.component';
 import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
-import {BoardTabsComponent} from './boards/board-tabs/board-tabs.component';
-import {BoardMemberSettingsComponent} from './boards/board-tabs/board-member-settings/board-member-settings.component';
 import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
+import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
+import {BoardMemberSettingsComponent} from './boards/board-detail/board-member-settings/board-member-settings.component';
+import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header.component';
 
 @NgModule({
   declarations: [
@@ -52,13 +52,13 @@ import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
     BoardsComponent,
     CreateBoardDialogComponent,
     AuthenticationComponent,
-    BoardTasksComponent,
     StatsComponent,
     AuthenticationComponent,
     ProfileComponent,
-    BoardTabsComponent,
     ProfileComponent,
-    BoardMemberSettingsComponent
+    BoardDetailComponent,
+    BoardMemberSettingsComponent,
+    DialogHeaderComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -73,7 +73,7 @@ import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
         },
         {
           path: 'boards/:boardId',
-          component: BoardTabsComponent
+          component: BoardDetailComponent
         },
         {
           path: 'profile',
@@ -131,7 +131,8 @@ import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
   ],
   entryComponents: [
     CreateBoardDialogComponent,
-    MatSnackBarContainer
+    MatSnackBarContainer,
+    BoardMemberSettingsComponent
   ],
   bootstrap: [AppComponent]
 })

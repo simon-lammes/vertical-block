@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {ProfileService} from '../../../profile/profile.service';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
@@ -7,6 +7,7 @@ import {debounceTime, filter, map, startWith, switchMap, take, tap, withLatestFr
 import {environment} from '../../../../environments/environment';
 import {Board} from '../../board.model';
 import {BoardsService} from '../../boards.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-board-member-settings',
@@ -14,7 +15,7 @@ import {BoardsService} from '../../boards.service';
   styleUrls: ['./board-member-settings.component.scss']
 })
 export class BoardMemberSettingsComponent implements OnInit {
-  @Input() board$: Observable<Board>;
+  board$: Observable<Board>;
   boardMembers$: Observable<Profile[]>;
   memberForm: FormGroup;
   filteredPotentialNewMembers$: Observable<Profile[]>;
@@ -27,6 +28,8 @@ export class BoardMemberSettingsComponent implements OnInit {
   }
 
   constructor(
+    public dialogRef: MatDialogRef<BoardMemberSettingsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {boardId: string},
     private formBuilder: FormBuilder,
     private profileService: ProfileService,
     private boardService: BoardsService
@@ -49,8 +52,9 @@ export class BoardMemberSettingsComponent implements OnInit {
         return typeof value === 'string';
       })
     );
+    this.board$ = this.boardService.getBoardById$(this.data.boardId);
     this.userIsWaitingForSearchResults$ = new BehaviorSubject<boolean>(false);
-    // We combine the board$ observable because whenever the board members change,
+    // We combine the searchTerm$ observable with the board$ observable because whenever the board members change,
     // we need to filter out those new members.
     this.filteredPotentialNewMembers$ = combineLatest(this.searchTerm$, this.board$).pipe(
       tap(() => this.userIsWaitingForSearchResults$.next(true)),
@@ -76,7 +80,7 @@ export class BoardMemberSettingsComponent implements OnInit {
     return profile.email;
   }
 
-  addNewMember() {
+  async addNewMember() {
     this.board$.pipe(take(1)).toPromise().then(board => {
       const newMember: Profile = this.newMemberControl.value;
       return this.boardService.addMemberToBoard(newMember, board);
@@ -90,5 +94,9 @@ export class BoardMemberSettingsComponent implements OnInit {
     this.board$.pipe(take(1)).toPromise().then(board => {
       return this.boardService.removeMemberFromBoard(member, board);
     }).catch(console.error);
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 }

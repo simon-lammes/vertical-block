@@ -1,19 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {BoardsService} from "../boards.service";
-import {Board, Task, TaskStatus} from "../board.model";
-import {ActivatedRoute} from "@angular/router";
-import {switchMap, take} from "rxjs/operators";
-import {Observable} from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {BoardsService} from '../boards.service';
+import {Board, Task, TaskStatus} from '../board.model';
+import {ActivatedRoute} from '@angular/router';
+import {map, switchMap, take} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material';
+import {DialogService} from '../../shared/dialog/dialog.service';
+import {BoardMemberSettingsComponent} from './board-member-settings/board-member-settings.component';
 
 @Component({
   selector: 'app-board-tasks',
-  templateUrl: './board-tasks.component.html',
-  styleUrls: ['./board-tasks.component.scss']
+  templateUrl: './board-detail.component.html',
+  styleUrls: ['./board-detail.component.scss']
 })
-export class BoardTasksComponent implements OnInit {
+export class BoardDetailComponent implements OnInit {
   taskInputForm: FormGroup;
-  @Input() board$: Observable<Board>;
+  board$: Observable<Board>;
   private todos$: Observable<Task[]>;
   private progress$: Observable<Task[]>;
   private done$: Observable<Task[]>;
@@ -21,7 +24,9 @@ export class BoardTasksComponent implements OnInit {
 
   constructor(
     private boardService: BoardsService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private dialogService: DialogService
   ) {
   }
 
@@ -29,7 +34,10 @@ export class BoardTasksComponent implements OnInit {
     this.taskInputForm = new FormGroup({
       taskInput: new FormControl('')
     });
-
+    this.board$ = this.activatedRoute.paramMap.pipe(
+      map(paramMap => paramMap.get('boardId')),
+      switchMap(boardId => this.boardService.getBoardById$(boardId))
+    );
     this.todos$ = this.board$.pipe(
       switchMap(board => {
         return this.boardService.getTasksFromBoardByStatus$(board, 'todo');
@@ -53,16 +61,13 @@ export class BoardTasksComponent implements OnInit {
   }
 
   onSubmit(taskInputForm: FormGroup) {
-    console.log('Valid?', taskInputForm.valid);
-    console.log('Aufgabe', taskInputForm.value.taskInput);
     const task: Task = {
       name: taskInputForm.value.taskInput,
       status: 'todo',
       id: ''
     };
     this.board$.pipe(take(1)).subscribe(board => {
-      console.log(board, task);
-      this.boardService.saveTaskForBoard(board, task).then(r => {
+      this.boardService.saveTaskForBoard(board, task).then(() => {
         this.taskInputForm.reset();
       });
     });
@@ -78,6 +83,17 @@ export class BoardTasksComponent implements OnInit {
     this.board$.pipe(take(1)).subscribe(board => {
       task.status = newStatus;
       this.boardService.updateTaskFromBoard(task, board);
+    });
+  }
+
+  async openMemberSettingsDialog() {
+    const boardId = await this.board$.pipe(
+      take(1),
+      map(board => board.id)
+    ).toPromise();
+    this.dialog.open(BoardMemberSettingsComponent, {
+      ...this.dialogService.getDefaultDialogConfiguration(),
+      data: {boardId}
     });
   }
 }

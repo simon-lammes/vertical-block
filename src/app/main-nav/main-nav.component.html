@@ -19,10 +19,14 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <a mat-button [href]="'/boards'">Boards</a>
-      <button mat-button [matMenuTriggerFor]="actions">Actions</button>
+      <a mat-button [href]="'/boards'">
+        <mat-icon>home</mat-icon>
+      </a>
+      <button mat-button [matMenuTriggerFor]="actions">
+        <mat-icon>add</mat-icon>
+      </button>
       <mat-menu #actions="matMenu">
-        <button mat-menu-item (click)="createBoard()">Create board</button>
+        <button mat-menu-item (click)="createBoard()">Create Board</button>
       </mat-menu>
       <span class="fill-empty-space"></span>
       <img [mat-menu-trigger-for]="userActions" *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl"

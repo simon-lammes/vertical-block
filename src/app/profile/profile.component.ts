@@ -50,7 +50,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.authenticationService.getPhotoUrlOfCurrentUserProvidedByFirebaseAuth$()
       ).pipe(
         map(([changes, providedPhotoURL]) => {
-          console.log(changes, providedPhotoURL);
           return providedPhotoURL && changes.photoURL !== providedPhotoURL;
         })
       );

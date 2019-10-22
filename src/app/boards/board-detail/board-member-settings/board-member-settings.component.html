@@ -1,0 +1,55 @@
+<app-dialog-header [heading]="'Member Settings'" (cancelled)="cancel()"></app-dialog-header>
+<mat-dialog-content>
+  <form [formGroup]="memberForm" (ngSubmit)="addNewMember()">
+    <mat-form-field>
+      <input type="text" placeholder="Add member by E-Mail" matInput formControlName="newMember" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getStringRepresentationOfProfile">
+        <mat-option *ngFor="let profile of filteredPotentialNewMembers$ | async" [value]="profile">
+          <img *ngIf="profile.photoURL" [src]="profile.photoURL" class="avatar" alt="">
+          <span>{{profile.email}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-spinner diameter="25" *ngIf="userIsWaitingForSearchResults$ | async"></mat-spinner>
+    <button *ngIf="memberForm.valid && newMemberControl.value" type="submit" mat-button>Add member</button>
+  </form>
+  <mat-table [dataSource]="boardMembers$ | async">
+    <!-- Position Column -->
+    <ng-container matColumnDef="profile-picture">
+      <mat-header-cell *matHeaderCellDef>Profile Picture</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <img *ngIf="element.photoURL" [src]="element.photoURL" class="rounded avatar" alt="">
+        <span *ngIf="!element.photoURL">-</span>
+      </mat-cell>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.displayName}} </mat-cell>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>E-Mail</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
+      <mat-cell *matCellDef="let element">Member</mat-cell>
+    </ng-container>
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-button (click)="removeMember(element)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-dialog-content>
+
+
+
