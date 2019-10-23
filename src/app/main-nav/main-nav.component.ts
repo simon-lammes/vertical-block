@@ -63,7 +63,11 @@ export class MainNavComponent implements OnInit {
     );
   }
 
-  close() {
+  closeSidenav() {
     this.drawer.close();
+  }
+
+  openSidenav() {
+    this.drawer.open();
   }
 }
