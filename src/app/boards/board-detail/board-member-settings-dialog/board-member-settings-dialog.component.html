@@ -10,6 +10,14 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="newMembersRole" required>
+        <mat-option value="owner">Owner</mat-option>
+        <mat-option value="editor">Editor</mat-option>
+        <mat-option value="viewer">Viewer</mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-spinner diameter="25" *ngIf="userIsWaitingForSearchResults$ | async"></mat-spinner>
     <button *ngIf="memberForm.valid && newMemberControl.value" type="submit" mat-button>Add member</button>
   </form>
@@ -35,7 +43,9 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="role">
       <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
-      <mat-cell *matCellDef="let element">Member</mat-cell>
+      <mat-cell *matCellDef="let element">
+        <app-board-member-role-select [board]="board$ | async" [member]="element"></app-board-member-role-select>
+      </mat-cell>
     </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">

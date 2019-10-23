@@ -25,6 +25,7 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSnackBar,
   MatSnackBarContainer,
   MatSnackBarModule,
@@ -42,8 +43,9 @@ import {MatRippleModule} from '@angular/material/core';
 import {ProfileComponent} from './profile/profile.component';
 import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 import {BoardDetailComponent} from './boards/board-detail/board-detail.component';
-import {BoardMemberSettingsComponent} from './boards/board-detail/board-member-settings/board-member-settings.component';
+import {BoardMemberSettingsDialogComponent} from './boards/board-detail/board-member-settings-dialog/board-member-settings-dialog.component';
 import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header.component';
+import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-member-settings-dialog/board-member-role-changer/board-member-role-changer.component';
 
 @NgModule({
   declarations: [
@@ -57,8 +59,9 @@ import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header
     ProfileComponent,
     ProfileComponent,
     BoardDetailComponent,
-    BoardMemberSettingsComponent,
-    DialogHeaderComponent
+    BoardMemberSettingsDialogComponent,
+    DialogHeaderComponent,
+    BoardMemberRoleChangerComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -122,7 +125,8 @@ import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header
           smartypants: false,
         },
       },
-    })
+    }),
+    MatSelectModule
   ],
   providers: [
     AngularFireAuth,
@@ -132,7 +136,7 @@ import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header
   entryComponents: [
     CreateBoardDialogComponent,
     MatSnackBarContainer,
-    BoardMemberSettingsComponent
+    BoardMemberSettingsDialogComponent
   ],
   bootstrap: [AppComponent]
 })

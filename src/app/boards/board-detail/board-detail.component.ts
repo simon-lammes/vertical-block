@@ -7,7 +7,7 @@ import {map, switchMap, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material';
 import {DialogService} from '../../shared/dialog/dialog.service';
-import {BoardMemberSettingsComponent} from './board-member-settings/board-member-settings.component';
+import {BoardMemberSettingsDialogComponent} from './board-member-settings-dialog/board-member-settings-dialog.component';
 
 @Component({
   selector: 'app-board-tasks',
@@ -91,7 +91,7 @@ export class BoardDetailComponent implements OnInit {
       take(1),
       map(board => board.id)
     ).toPromise();
-    this.dialog.open(BoardMemberSettingsComponent, {
+    this.dialog.open(BoardMemberSettingsDialogComponent, {
       ...this.dialogService.getDefaultDialogConfiguration(),
       data: {boardId}
     });

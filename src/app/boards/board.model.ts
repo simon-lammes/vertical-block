@@ -2,15 +2,17 @@ export interface Board {
   id: string;
   title: string;
   description: string;
-  creatorId: string;
-  memberIds: string[];
-  idsOfInvitedUsers: string[];
+  members: {
+    [userId: string]: BoardMemberRole;
+  };
 }
 
 export interface BoardBlueprint {
   title: string;
   description: string;
 }
+
+export type BoardMemberRole = 'owner' | 'editor' | 'viewer';
 
 export interface Task {
   name: string;

@@ -1,20 +1,20 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProfileService} from '../../../profile/profile.service';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Profile, validateProfile} from '../../../profile/profile.model';
 import {debounceTime, map, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {environment} from '../../../../environments/environment';
-import {Board} from '../../board.model';
+import {Board, BoardMemberRole} from '../../board.model';
 import {BoardsService} from '../../boards.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-board-member-settings',
-  templateUrl: './board-member-settings.component.html',
-  styleUrls: ['./board-member-settings.component.scss']
+  templateUrl: './board-member-settings-dialog.component.html',
+  styleUrls: ['./board-member-settings-dialog.component.scss']
 })
-export class BoardMemberSettingsComponent implements OnInit {
+export class BoardMemberSettingsDialogComponent implements OnInit {
   board$: Observable<Board>;
   boardMembers$: Observable<Profile[]>;
   memberForm: FormGroup;
@@ -27,9 +27,13 @@ export class BoardMemberSettingsComponent implements OnInit {
     return this.memberForm.controls.newMember;
   }
 
+  get newMembersRoleControl(): AbstractControl {
+    return this.memberForm.controls.newMembersRole;
+  }
+
   constructor(
-    public dialogRef: MatDialogRef<BoardMemberSettingsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {boardId: string},
+    public dialogRef: MatDialogRef<BoardMemberSettingsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { boardId: string },
     private formBuilder: FormBuilder,
     private profileService: ProfileService,
     private boardService: BoardsService
@@ -38,7 +42,8 @@ export class BoardMemberSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.memberForm = this.formBuilder.group({
-      newMember: ['', validateProfile]
+      newMember: ['', validateProfile],
+      newMembersRole: ['', Validators.required]
     });
     this.searchTerm$ = this.newMemberControl.valueChanges.pipe(
       // The first search term is an empty string, so the observable should emit
@@ -68,7 +73,7 @@ export class BoardMemberSettingsComponent implements OnInit {
       withLatestFrom(this.board$),
       // Profiles that are already members of the board should not be suggested to the user for adding.
       map(([profilesFilteredBySearchTerm, board]) => profilesFilteredBySearchTerm
-        .filter(profile => !board.memberIds || !board.memberIds.includes(profile.uid))
+        .filter(profile => !board.members || !board.members[profile.uid])
       ),
       tap(() => this.userIsWaitingForSearchResults$.next(false))
     );
@@ -87,10 +92,12 @@ export class BoardMemberSettingsComponent implements OnInit {
   async addNewMember() {
     this.board$.pipe(take(1)).toPromise().then(board => {
       const newMember: Profile = this.newMemberControl.value;
-      return this.boardService.addMemberToBoard(newMember, board);
+      const newMembersRole: BoardMemberRole = this.newMembersRoleControl.value;
+      return this.boardService.saveMemberForBoard(newMember, board, newMembersRole);
     }).then(() => {
       // Reset form
       this.newMemberControl.patchValue('');
+      this.newMembersRoleControl.patchValue('');
     }).catch(console.error);
   }
 

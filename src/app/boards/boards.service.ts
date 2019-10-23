@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Board, BoardBlueprint, Task, TaskStatus} from './board.model';
+import {Board, BoardBlueprint, BoardMemberRole, Task, TaskStatus} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Observable} from 'rxjs';
 import {Profile} from '../profile/profile.model';
-import {removeValueFromArray} from '../shared/universal-helper.functions';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +21,8 @@ export class BoardsService {
     return this.authenticationService.getIdOfCurrentUser$().pipe(
       switchMap(userId => {
         return this.db.collection<Board>('boards', ref => ref
-          .where('memberIds', 'array-contains', userId)
-          .orderBy('title'))
-          .snapshotChanges()
+          .where(`members.${userId}`, '>', '')
+        ).snapshotChanges()
           .pipe(
             map(actions => actions.map(a => {
               const board = a.payload.doc.data() as Board;
@@ -45,9 +43,9 @@ export class BoardsService {
         }
         const board: Partial<Board> = {
           ...boardBlueprint,
-          creatorId: userId,
-          memberIds: [userId],
-          idsOfInvitedUsers: []
+          members: {
+            [userId]: 'owner'
+          }
         };
         this.db.collection('boards').add(board);
       })
@@ -73,11 +71,14 @@ export class BoardsService {
     );
   }
 
-  addMemberToBoard(newMember: Profile, board: Board): Promise<any> {
-    if (!board.memberIds) {
-      board.memberIds = [];
-    }
-    board.memberIds.push(newMember.uid);
+  /**
+   * With this method, you can add new members to a board or change a members role.
+   * @param member either a new member or an existing member whose role needs to be changed
+   * @param board the board which member settings are changed
+   * @param role the new role of the member
+   */
+  saveMemberForBoard(member: Profile, board: Board, role: BoardMemberRole): Promise<any> {
+    board.members[member.uid] = role;
     return this.updateBoard(board);
   }
 
@@ -103,12 +104,12 @@ export class BoardsService {
     return this.db.doc(`boards/${board.id}/tasks/${updatedTask.id}`).set(updatedTask);
   }
 
-  private updateBoard(newBoard: Board) {
+  updateBoard(newBoard: Board) {
     return this.db.doc(`boards/${newBoard.id}`).set(newBoard);
   }
 
   removeMemberFromBoard(member: Profile, board: Board): Promise<any> {
-    board.memberIds = removeValueFromArray(board.memberIds, member.uid);
+    delete board.members[member.uid];
     return this.updateBoard(board);
   }
 }

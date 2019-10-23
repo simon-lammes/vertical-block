@@ -94,15 +94,16 @@ export class ProfileService {
   }
 
   getAllMembersOfBoard$(board: Board): Observable<Profile[]> {
-    if (!board.memberIds || board.memberIds.length === 0) {
+    if (!board.members) {
       return of([]);
     }
-    return from(board.memberIds).pipe(
+    const memberIds = Object.keys(board.members);
+    return from(memberIds).pipe(
       mergeMap(memberId => this.getProfileByIdSnapshot(memberId)),
       // We put the members into arrays so that we can concat those arrays
       // into one big array containing all members.
       map(member => [member]),
       reduce((members, memberToAdd) => members.concat(memberToAdd))
-  );
-}
+    );
+  }
 }

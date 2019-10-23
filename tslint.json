@@ -29,7 +29,11 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      {
+        "limit": 120,
+        // Import Statements should be ignored.
+        "ignore-pattern": "^import [^,]+ from |^export | implements"
+      }
     ],
     "member-access": false,
     "member-ordering": [
