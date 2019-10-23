@@ -6,7 +6,7 @@
     <mat-toolbar>Your Boards</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item *ngFor="let board of boardsToWhichTheUserHasAccess$ | async"
-         [href]="'/boards/' + board.id">{{board.title}}</a>
+         [routerLink]="'/boards/' + board.id" (click)="close()">{{board.title}}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -19,7 +19,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <a mat-button [href]="'/boards'">
+      <a mat-button [routerLink]="'/boards'">
         <mat-icon>home</mat-icon>
       </a>
       <button mat-button [matMenuTriggerFor]="actions">
