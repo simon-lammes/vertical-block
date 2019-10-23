@@ -18,6 +18,7 @@ export interface Task {
   name: string;
   status: TaskStatus;
   id: string;
+  description: string;
 }
 
 export type TaskStatus = 'todo' | 'progress' | 'done' | 'review';

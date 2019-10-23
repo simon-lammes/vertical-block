@@ -46,6 +46,7 @@ import {BoardDetailComponent} from './boards/board-detail/board-detail.component
 import {BoardMemberSettingsDialogComponent} from './boards/board-detail/board-member-settings-dialog/board-member-settings-dialog.component';
 import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header.component';
 import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-member-settings-dialog/board-member-role-changer/board-member-role-changer.component';
+import { TaskDetailDialogComponent } from './boards/board-detail/task-detail-dialog/task-detail-dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-membe
     BoardDetailComponent,
     BoardMemberSettingsDialogComponent,
     DialogHeaderComponent,
-    BoardMemberRoleChangerComponent
+    BoardMemberRoleChangerComponent,
+    TaskDetailDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -136,7 +138,8 @@ import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-membe
   entryComponents: [
     CreateBoardDialogComponent,
     MatSnackBarContainer,
-    BoardMemberSettingsDialogComponent
+    BoardMemberSettingsDialogComponent,
+    TaskDetailDialogComponent
   ],
   bootstrap: [AppComponent]
 })

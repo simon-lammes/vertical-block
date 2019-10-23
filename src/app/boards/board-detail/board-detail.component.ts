@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material';
 import {DialogService} from '../../shared/dialog/dialog.service';
 import {BoardMemberSettingsDialogComponent} from './board-member-settings-dialog/board-member-settings-dialog.component';
+import {TaskDetailDialogComponent} from './task-detail-dialog/task-detail-dialog.component';
 
 @Component({
   selector: 'app-board-tasks',
@@ -64,7 +65,8 @@ export class BoardDetailComponent implements OnInit {
     const task: Task = {
       name: taskInputForm.value.taskInput,
       status: 'todo',
-      id: ''
+      id: '',
+      description:''
     };
     this.board$.pipe(take(1)).subscribe(board => {
       this.boardService.saveTaskForBoard(board, task).then(() => {
@@ -94,6 +96,14 @@ export class BoardDetailComponent implements OnInit {
     this.dialog.open(BoardMemberSettingsDialogComponent, {
       ...this.dialogService.getDefaultDialogConfiguration(),
       data: {boardId}
+    });
+  }
+
+  async showTaskDetailDialog(task: Task) {
+    const board = await this.board$.pipe(take(1)).toPromise();
+    this.dialog.open(TaskDetailDialogComponent, {
+      ...this.dialogService.getDefaultDialogConfiguration(),
+      data: {task, board}
     });
   }
 }

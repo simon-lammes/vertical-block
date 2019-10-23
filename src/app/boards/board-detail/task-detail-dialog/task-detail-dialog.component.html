@@ -1,0 +1,9 @@
+<app-dialog-header [heading]="'Task Details'" (cancelled)="cancel()"></app-dialog-header>
+<h4>Description</h4>
+<markdown *ngIf="!isDescriptionBeingEdited" (click)="isDescriptionBeingEdited = true" [data]="data.task.description">{{data.task.description}}</markdown>
+<form *ngIf="isDescriptionBeingEdited" [formGroup]="descriptionForm" (ngSubmit)="saveDescription()">
+  <mat-form-field>
+    <input type="text" placeholder="Description" matInput formControlName="description">
+  </mat-form-field>
+  <button *ngIf="descriptionForm.dirty && descriptionForm.valid" type="submit" mat-button>Save</button>
+</form>
