@@ -1,10 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Board, Task} from "../../board.model";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {validateProfile} from "../../../profile/profile.model";
-import {BoardsService} from "../../boards.service";
-import {map, take} from "rxjs/operators";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Board} from '../../board.model';
+import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
+import {BoardsService} from '../../boards.service';
+import {Task} from '../../task.model';
 
 @Component({
   selector: 'app-task-detail-dialog',

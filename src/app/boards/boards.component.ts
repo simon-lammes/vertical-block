@@ -4,6 +4,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {BoardsService} from './boards.service';
 import {Observable} from 'rxjs';
 import {Board} from './board.model';
+import {ProfileService} from '../profile/profile.service';
 
 @Component({
   selector: 'app-boards',
@@ -21,7 +22,8 @@ export class BoardsComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private boardsService: BoardsService
+    private boardsService: BoardsService,
+    private profileService: ProfileService
   ) {
   }
 
@@ -29,13 +31,18 @@ export class BoardsComponent implements OnInit {
     this.boardsToWhichTheUserHasAccess$ = this.boardsService.getAllBoardsToWhichTheUserHasAccess$();
   }
 
-  removeBoard($event: MouseEvent, board: Board) {
-    this.boardsService.removeBoard(board);
+  async removeBoard($event: MouseEvent, board: Board) {
     // This method stops event propagation, so that no further event listener is triggered.
     // We do this because event listeners in parent elements would do interfering things with the event
     // listeners in our child element. Therefore the child element can trigger this method and thereby prevent
     // its parents from doing anything.
     $event.stopPropagation();
+    const currentUsersProfile = await this.profileService.getProfileOfCurrentUserSnapshot();
+    if (!board.canBeDeletedByMember(currentUsersProfile)) {
+      alert('You are not allowed to delete this board because you are not an owner of this board.');
+      return;
+    }
+    this.boardsService.removeBoard(board);
   }
 
   getColspanForBoard$() {

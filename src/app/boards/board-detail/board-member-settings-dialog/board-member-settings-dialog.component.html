@@ -10,15 +10,16 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <mat-spinner diameter="25" [class.invisible]="!(userIsWaitingForSearchResults$ | async)"></mat-spinner>
     <mat-form-field>
       <mat-label>Role</mat-label>
       <mat-select formControlName="newMembersRole" required>
         <mat-option value="owner">Owner</mat-option>
+        <mat-option value="administrator">Administrator</mat-option>
         <mat-option value="editor">Editor</mat-option>
         <mat-option value="viewer">Viewer</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-spinner diameter="25" *ngIf="userIsWaitingForSearchResults$ | async"></mat-spinner>
     <button *ngIf="memberForm.valid && newMemberControl.value" type="submit" mat-button>Add member</button>
   </form>
   <mat-table [dataSource]="boardMembers$ | async">
@@ -51,7 +52,7 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-button (click)="removeMember(element)">
+        <button mat-button (click)="tryToRemoveMember(element)">
           <mat-icon>clear</mat-icon>
         </button>
       </mat-cell>

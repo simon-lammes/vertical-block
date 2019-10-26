@@ -1,6 +1,7 @@
 <mat-form-field>
   <mat-select [value]="getRoleOfUser()" (selectionChange)="changeRoleOfUser($event)">
     <mat-option value="owner">Owner</mat-option>
+    <mat-option value="administrator">Administrator</mat-option>
     <mat-option value="editor">Editor</mat-option>
     <mat-option value="viewer">Viewer</mat-option>
   </mat-select>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {BoardsService} from '../boards.service';
-import {Board, Task, TaskStatus} from '../board.model';
+import {Board} from '../board.model';
 import {ActivatedRoute} from '@angular/router';
 import {map, switchMap, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
@@ -9,6 +9,7 @@ import {MatDialog} from '@angular/material';
 import {DialogService} from '../../shared/dialog/dialog.service';
 import {BoardMemberSettingsDialogComponent} from './board-member-settings-dialog/board-member-settings-dialog.component';
 import {TaskDetailDialogComponent} from './task-detail-dialog/task-detail-dialog.component';
+import {Task, TaskStatus} from '../task.model';
 
 @Component({
   selector: 'app-board-tasks',
@@ -62,11 +63,11 @@ export class BoardDetailComponent implements OnInit {
   }
 
   onSubmit(taskInputForm: FormGroup) {
-    const task: Task = {
+    const task: Partial<Task> = {
       name: taskInputForm.value.taskInput,
       status: 'todo',
       id: '',
-      description:''
+      description: ''
     };
     this.board$.pipe(take(1)).subscribe(board => {
       this.boardService.saveTaskForBoard(board, task).then(() => {

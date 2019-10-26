@@ -23,14 +23,6 @@ export class BoardMemberSettingsDialogComponent implements OnInit {
   userIsWaitingForSearchResults$: BehaviorSubject<boolean>;
   displayedColumns: string[] = ['profile-picture', 'name', 'email', 'role', 'actions'];
 
-  get newMemberControl(): AbstractControl {
-    return this.memberForm.controls.newMember;
-  }
-
-  get newMembersRoleControl(): AbstractControl {
-    return this.memberForm.controls.newMembersRole;
-  }
-
   constructor(
     public dialogRef: MatDialogRef<BoardMemberSettingsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { boardId: string },
@@ -38,6 +30,14 @@ export class BoardMemberSettingsDialogComponent implements OnInit {
     private profileService: ProfileService,
     private boardService: BoardsService
   ) {
+  }
+
+  get newMemberControl(): AbstractControl {
+    return this.memberForm.controls.newMember;
+  }
+
+  get newMembersRoleControl(): AbstractControl {
+    return this.memberForm.controls.newMembersRole;
   }
 
   ngOnInit() {
@@ -90,21 +90,30 @@ export class BoardMemberSettingsDialogComponent implements OnInit {
   }
 
   async addNewMember() {
-    this.board$.pipe(take(1)).toPromise().then(board => {
-      const newMember: Profile = this.newMemberControl.value;
-      const newMembersRole: BoardMemberRole = this.newMembersRoleControl.value;
-      return this.boardService.saveMemberForBoard(newMember, board, newMembersRole);
-    }).then(() => {
-      // Reset form
-      this.newMemberControl.patchValue('');
-      this.newMembersRoleControl.patchValue('');
-    }).catch(console.error);
+    const profileOfCurrentUser = this.profileService.getProfileOfCurrentUserSnapshot();
+    const board = await this.board$.pipe(take(1)).toPromise();
+    const newMember: Profile = this.newMemberControl.value;
+    const newMembersRole: BoardMemberRole = this.newMembersRoleControl.value;
+    if (!board.isMemberAllowedToSetOtherMembersRole(await profileOfCurrentUser, newMember, newMembersRole)) {
+      alert('Your role does not have the permissions to give somebody else this role.');
+      return;
+    }
+    board.setMemberRole(newMember, newMembersRole);
+    await this.boardService.updateBoard(board);
+    this.newMemberControl.patchValue('');
+    this.newMembersRoleControl.patchValue('');
+    return this.boardService.updateBoard(board);
   }
 
-  removeMember(member: Profile) {
-    this.board$.pipe(take(1)).toPromise().then(board => {
-      return this.boardService.removeMemberFromBoard(member, board);
-    }).catch(console.error);
+  async tryToRemoveMember(memberToBeRemoved: Profile) {
+    const board = await this.board$.pipe(take(1)).toPromise();
+    const profileOfCurrentUser = await this.profileService.getProfileOfCurrentUserSnapshot();
+    if (!board.isAllowedToRemoveMember(profileOfCurrentUser, memberToBeRemoved)) {
+      alert('You are not allowed to remove this member.');
+      return;
+    }
+    board.removeMember(profileOfCurrentUser);
+    return this.boardService.updateBoard(board);
   }
 
   cancel() {
