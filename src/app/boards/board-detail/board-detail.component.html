@@ -7,89 +7,63 @@
   </mat-menu>
 </mat-toolbar>
 <mat-accordion>
+
   <!-- To do -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Todo
-      </mat-panel-title>
-      <mat-panel-description>
-        Type in the tasks you want to do
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <form [formGroup]="taskInputForm" (ngSubmit)="onSubmit(taskInputForm)" class="board-detail-create-field">
-      <mat-form-field>
-        <input placeholder="Type in your task" formControlName="taskInput" matInput>
-      </mat-form-field>
-      <button mat-button type="submit">Add Task</button>
-    </form>
-    <mat-list>
-      <mat-list-item *ngFor="let todo of todos$ | async">
-        <button mat-button (click)="showTaskDetailDialog(todo)">{{todo.name}}</button>
-        <button mat-button (click)="setTasksStatus(todo, 'progress')">
-          <mat-icon>move_to_inbox</mat-icon>
-        </button>
-        <button mat-button (click)="deleteTask(todo)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
-  <!-- In Progress -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        In Progess
-      </mat-panel-title>
-      <mat-panel-description>
-        Show the tasks that are currently in progess
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <mat-list>
-      <mat-list-item *ngFor="let progress of progress$ | async">
-        <button mat-button (click)="showTaskDetailDialog(progress)">{{progress.name}}</button>
-        <button mat-button (click)="setTasksStatus(progress, 'review')">
-          <mat-icon>check</mat-icon>
-        </button>
-        <button mat-button (click)="deleteTask(progress)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
-  <!-- Review -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Review
-      </mat-panel-title>
-      <mat-panel-description>
-        Show the tasks that got reviewed by a colleague
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <mat-list>
-      <mat-list-item *ngFor="let review of review$ | async">
-        <button mat-button (click)="showTaskDetailDialog(review)">{{review.name}}</button>
-        <button mat-button (click)="setTasksStatus(review, 'done')">
-          <mat-icon>done_all</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
-  <!-- Done -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Done
-      </mat-panel-title>
-      <mat-panel-description>
-        Show the tasks that are done
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <mat-list>
-      <mat-list-item *ngFor="let done of done$ | async">
-        <button mat-button (click)="showTaskDetailDialog(done)">{{done.name}}</button>
-      </mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
+  <mat-tab-group>
+    <mat-tab label="Todo">
+      <form [formGroup]="taskInputForm" (ngSubmit)="onSubmit(taskInputForm)" class="board-detail-create-field">
+        <mat-form-field>
+          <input placeholder="Type in your task" formControlName="taskInput" matInput>
+        </mat-form-field>
+        <button mat-button type="submit">Add Task</button>
+      </form>
+      <mat-list>
+        <mat-list-item *ngFor="let todo of todos$ | async">
+          <button mat-button (click)="showTaskDetailDialog(todo)">{{todo.name}}</button>
+          <button mat-button (click)="setTasksStatus(todo, 'progress')">
+            <mat-icon>move_to_inbox</mat-icon>
+          </button>
+          <button mat-button (click)="deleteTask(todo)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+
+    <!-- In Progress -->
+    <mat-tab label="In Progress">
+      <mat-list>
+        <mat-list-item *ngFor="let progress of progress$ | async">
+          <button mat-button (click)="showTaskDetailDialog(progress)">{{progress.name}}</button>
+          <button mat-button (click)="setTasksStatus(progress, 'review')">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-button (click)="deleteTask(progress)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+
+    <!-- Review -->
+    <mat-tab label="Review">
+        <mat-list>
+          <mat-list-item *ngFor="let review of review$ | async">
+            <button mat-button (click)="showTaskDetailDialog(review)">{{review.name}}</button>
+            <button mat-button (click)="setTasksStatus(review, 'done')">
+              <mat-icon>done_all</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+    </mat-tab>
+
+    <!-- Done -->
+    <mat-tab label="Done">
+      <mat-list>
+          <mat-list-item *ngFor="let done of done$ | async">
+            <button mat-button (click)="showTaskDetailDialog(done)">{{done.name}}</button>
+          </mat-list-item>
+        </mat-list>
+    </mat-tab>
+  </mat-tab-group>
 </mat-accordion>
