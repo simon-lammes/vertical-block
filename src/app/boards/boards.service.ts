@@ -3,7 +3,7 @@ import {Board, BoardBlueprint} from './board.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Task, TaskStatus} from './task.model';
 
 @Injectable({
@@ -17,9 +17,12 @@ export class BoardsService {
   ) {
   }
 
-  getAllBoardsToWhichTheUserHasAccess$() {
+  getAllBoardsToWhichTheUserHasAccess$(): Observable<Board[]> {
     return this.authenticationService.getIdOfCurrentUser$().pipe(
       switchMap(userId => {
+        if (!userId) {
+          return of([]);
+        }
         return this.db.collection('boards', ref => ref
           .where(`members.${userId}`, '>', '')
         ).snapshotChanges()
