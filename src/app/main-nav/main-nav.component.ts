@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import {map, shareReplay, take} from 'rxjs/operators';
 import {Board} from '../boards/board.model';
 import {CreateBoardDialogComponent} from '../boards/create-board-dialog/create-board-dialog.component';
 import {MatDialog, MatSidenav, MatSnackBar} from '@angular/material';
@@ -26,6 +26,10 @@ export class MainNavComponent implements OnInit {
   imageUrlOfCurrentUser$: Observable<string>;
   isUserAuthenticated$: Observable<boolean>;
   boardsToWhichTheUserHasAccess$: Observable<Board[]>;
+
+  get isHandset() {
+    return this.isHandset$.pipe(take(1)).toPromise();
+  }
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -63,7 +67,11 @@ export class MainNavComponent implements OnInit {
     );
   }
 
-  closeSidenav() {
+  async closeSidenav() {
+    if (!await this.isHandset) {
+      // You should only be able to close the sidenav on handset devices.
+      return;
+    }
     this.drawer.close();
   }
 
