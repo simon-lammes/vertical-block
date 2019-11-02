@@ -15,7 +15,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
-import {CreateBoardDialogComponent} from './boards/create-board-dialog/create-board-dialog.component';
+import {SaveBoardDialogComponent} from './boards/save-board-dialog/save-board-dialog.component';
 import {
   MatAutocompleteModule,
   MatCheckboxModule,
@@ -53,7 +53,7 @@ import { TaskDetailDialogComponent } from './boards/board-detail/task-detail-dia
     AppComponent,
     MainNavComponent,
     BoardsComponent,
-    CreateBoardDialogComponent,
+    SaveBoardDialogComponent,
     AuthenticationComponent,
     StatsComponent,
     AuthenticationComponent,
@@ -136,7 +136,7 @@ import { TaskDetailDialogComponent } from './boards/board-detail/task-detail-dia
     AngularFirestore
   ],
   entryComponents: [
-    CreateBoardDialogComponent,
+    SaveBoardDialogComponent,
     MatSnackBarContainer,
     BoardMemberSettingsDialogComponent,
     TaskDetailDialogComponent

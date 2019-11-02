@@ -64,6 +64,9 @@ export class BoardsService {
   }
 
   getBoardById$(boardId: string): Observable<Board> {
+    if (!boardId) {
+      return of(undefined);
+    }
     return this.db.collection('boards').doc(boardId).snapshotChanges().pipe(
       map(snapshot => {
         const board = new Board().deserialize(snapshot.payload.data());
@@ -96,7 +99,7 @@ export class BoardsService {
     return this.db.doc(`boards/${board.id}/tasks/${updatedTask.id}`).set(updatedTask.serialize());
   }
 
-  updateBoard(newBoard: Board) {
-    return this.db.doc(`boards/${newBoard.id}`).set(newBoard.serialize());
+  updateBoard(editedBoard: Board) {
+    return this.db.doc(`boards/${editedBoard.id}`).set(editedBoard.serialize());
   }
 }

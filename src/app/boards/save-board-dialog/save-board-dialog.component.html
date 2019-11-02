@@ -1,5 +1,5 @@
-<form [formGroup]="boardForm" (ngSubmit)="createNewBoard()">
-  <app-dialog-header (cancelled)="cancel()" [heading]="'Create BoardModel'"></app-dialog-header>
+<form [formGroup]="boardForm" (ngSubmit)="saveBoard()">
+  <app-dialog-header (cancelled)="cancel()" [heading]="dialogHeading$ | async"></app-dialog-header>
   <mat-dialog-content>
     <div class="input-field-wrapper">
       <mat-form-field>
@@ -34,7 +34,8 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button type="button" (click)="cancel()">Cancel</button>
-    <button mat-button type="submit" [disabled]="boardForm.invalid">Create</button>
+    <button mat-button type="submit" [disabled]="boardForm.invalid" *ngIf="!(isUserCurrentlyEditingAnExistingBoard$ | async)">Create</button>
+    <button mat-button type="submit" [disabled]="boardForm.invalid" *ngIf="isUserCurrentlyEditingAnExistingBoard$ | async">Update</button>
   </mat-dialog-actions>
 </form>
 

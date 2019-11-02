@@ -3,12 +3,13 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map, shareReplay, take} from 'rxjs/operators';
 import {Board} from '../boards/board.model';
-import {CreateBoardDialogComponent} from '../boards/create-board-dialog/create-board-dialog.component';
+import {SaveBoardDialogComponent} from '../boards/save-board-dialog/save-board-dialog.component';
 import {MatDialog, MatSidenav, MatSnackBar} from '@angular/material';
 import {BoardsService} from '../boards/boards.service';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {ProfileService} from '../profile/profile.service';
+import {DialogService} from '../shared/dialog/dialog.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -39,15 +40,14 @@ export class MainNavComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar,
     private profileService: ProfileService,
+    private dialogService: DialogService
   ) {
   }
 
   createBoard() {
-    this.dialog.open(CreateBoardDialogComponent, {
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      height: '98%',
-      width: '98%'
+    this.dialog.open(SaveBoardDialogComponent, {
+      ...this.dialogService.getDefaultDialogConfiguration(),
+      data: {}
     });
   }
 
