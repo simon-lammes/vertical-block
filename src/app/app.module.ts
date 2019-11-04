@@ -47,6 +47,7 @@ import {BoardMemberSettingsDialogComponent} from './boards/board-detail/board-me
 import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header.component';
 import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-member-settings-dialog/board-member-role-changer/board-member-role-changer.component';
 import { TaskDetailDialogComponent } from './boards/board-detail/task-detail-dialog/task-detail-dialog.component';
+import {BoardGuard} from "./boards/board-detail/board.guard";
 
 @NgModule({
   declarations: [
@@ -78,7 +79,10 @@ import { TaskDetailDialogComponent } from './boards/board-detail/task-detail-dia
         },
         {
           path: 'boards/:boardId',
-          component: BoardDetailComponent
+          component: BoardDetailComponent,
+          resolve: {
+            board: BoardGuard
+          }
         },
         {
           path: 'profile',

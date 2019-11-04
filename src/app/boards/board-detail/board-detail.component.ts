@@ -41,10 +41,8 @@ export class BoardDetailComponent implements OnInit {
     this.taskInputForm = new FormGroup({
       taskInput: new FormControl('')
     });
-    this.board$ = this.activatedRoute.paramMap.pipe(
-      map(paramMap => paramMap.get('boardId')),
-      switchMap(boardId => this.boardService.getBoardById$(boardId))
-    );
+    //Data is provided by the resolver in BoardGuard
+    this.board$ = this.activatedRoute.data.pipe(map(data => data.board));
     this.todos$ = this.board$.pipe(
       switchMap(board => {
         return this.boardService.getTasksFromBoardByStatus$(board, 'todo');
