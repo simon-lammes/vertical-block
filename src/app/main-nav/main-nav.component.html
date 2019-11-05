@@ -22,12 +22,7 @@
       <a mat-button [routerLink]="'/boards'">
         <mat-icon>home</mat-icon>
       </a>
-      <button mat-button [matMenuTriggerFor]="actions">
-        <mat-icon>add</mat-icon>
-      </button>
-      <mat-menu #actions="matMenu">
-        <button mat-menu-item (click)="createBoard()">Create Board</button>
-      </mat-menu>
+      <app-quick-actions></app-quick-actions>
       <span class="fill-empty-space"></span>
       <img [mat-menu-trigger-for]="userActions" *ngIf="imageUrlOfCurrentUser$ | async as imageUrl" [src]="imageUrl"
            alt="Avatar" class="avatar">

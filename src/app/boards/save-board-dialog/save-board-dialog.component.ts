@@ -69,6 +69,9 @@ export class SaveBoardDialogComponent implements OnInit, OnDestroy {
     this.currentlyEditedBoard$ = this.boardsService.getBoardById$(this.data.boardId);
     // Whenever the currently edited board changes, the form needs to reflect this change.
     this.currentlyEditedBoard$.pipe(untilDestroyed(this)).subscribe(board => {
+        if (!board) {
+          return;
+        }
         this.boardForm = this.formBuilder.group({
           title: [board.title, Validators.required],
           description: board.description

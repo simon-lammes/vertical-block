@@ -1,0 +1,10 @@
+<form [formGroup]="quickActionForm">
+  <mat-form-field floatLabel="never">
+    <input (ngModelChange)="inputChange($event)" type="text" placeholder="Quick Actions" matInput formControlName="quickActionName" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let quickAction of filteredQuickActions$ | async" [value]="quickAction">
+        <span>{{quickAction.name}}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

@@ -46,8 +46,9 @@ import {BoardDetailComponent} from './boards/board-detail/board-detail.component
 import {BoardMemberSettingsDialogComponent} from './boards/board-detail/board-member-settings-dialog/board-member-settings-dialog.component';
 import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header.component';
 import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-member-settings-dialog/board-member-role-changer/board-member-role-changer.component';
-import { TaskDetailDialogComponent } from './boards/board-detail/task-detail-dialog/task-detail-dialog.component';
-import {BoardGuard} from "./boards/board-detail/board.guard";
+import {TaskDetailDialogComponent} from './boards/board-detail/task-detail-dialog/task-detail-dialog.component';
+import {BoardGuard} from './boards/board-detail/board.guard';
+import {QuickActionsComponent} from './main-nav/quick-actions/quick-actions.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {BoardGuard} from "./boards/board-detail/board.guard";
     BoardMemberSettingsDialogComponent,
     DialogHeaderComponent,
     BoardMemberRoleChangerComponent,
-    TaskDetailDialogComponent
+    TaskDetailDialogComponent,
+    QuickActionsComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
