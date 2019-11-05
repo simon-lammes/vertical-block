@@ -1,3 +1,5 @@
+@import "src/styles";
+
 .sidenav-container {
   height: 100%;
 }
@@ -25,4 +27,9 @@ img.avatar {
 
 span.fill-empty-space {
   flex: 1 1 auto;
+}
+
+a.highlight {
+  font-weight: bolder;
+  background: $highlight !important;
 }

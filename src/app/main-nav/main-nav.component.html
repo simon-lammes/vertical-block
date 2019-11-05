@@ -5,7 +5,7 @@
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Your Boards</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item *ngFor="let board of boardsToWhichTheUserHasAccess$ | async"
+      <a routerLinkActive="highlight" mat-list-item *ngFor="let board of boardsToWhichTheUserHasAccess$ | async"
          [routerLink]="'/boards/' + board.id" (click)="closeSidenav()">{{board.title}}</a>
     </mat-nav-list>
   </mat-sidenav>

@@ -5,6 +5,8 @@
 /* Variables */
 $app-warn: mat-palette($mat-red);
 $warn: mat-color($app-warn);
+$app-highlight: mat-palette($mat-amber);
+$highlight: mat-color($app-highlight);
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
