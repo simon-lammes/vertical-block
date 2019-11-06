@@ -15,7 +15,6 @@ import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import {RouterModule} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
-import {CreateBoardDialogComponent} from './boards/create-board-dialog/create-board-dialog.component';
 import {BoardStatisticsDialogComponent} from './boards/board-detail/board-statistics-dialog/board-statistics-dialog.component';
 import {SaveBoardDialogComponent} from './boards/save-board-dialog/save-board-dialog.component';
 import {
@@ -51,10 +50,11 @@ import {TaskDetailDialogComponent} from './boards/board-detail/task-detail-dialo
 import {MyDoughnutChartComponent} from './boards/board-detail/board-statistics-dialog/my-doughnut-chart/my-doughnut-chart.component';
 import {ChartsModule} from 'ng2-charts';
 import {DailyStatisticsComponent} from './boards/board-detail/board-statistics-dialog/daily-statistics/daily-statistics-component';
-import {TaskDetailDialogComponent} from './boards/board-detail/task-detail-dialog/task-detail-dialog.component';
 import {BoardGuard} from './boards/board-detail/board.guard';
 import {QuickActionsComponent} from './main-nav/quick-actions/quick-actions.component';
 
+
+// noinspection AngularInvalidImportedOrDeclaredSymbol
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,9 +72,11 @@ import {QuickActionsComponent} from './main-nav/quick-actions/quick-actions.comp
     TaskDetailDialogComponent,
     BoardStatisticsDialogComponent,
     MyDoughnutChartComponent,
-    DailyStatisticsComponent
-    TaskDetailDialogComponent,
-    QuickActionsComponent
+    DailyStatisticsComponent,
+    BoardStatisticsDialogComponent,
+    MyDoughnutChartComponent,
+    DailyStatisticsComponent,
+    QuickActionsComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
