@@ -102,4 +102,15 @@ export class BoardsService {
   updateBoard(editedBoard: Board) {
     return this.db.doc(`boards/${editedBoard.id}`).set(editedBoard.serialize());
   }
+
+  getTaskFromBoardById$(taskId: string, board: Board) {
+    return this.db.doc(`boards/${board.id}/tasks/${taskId}`).snapshotChanges().pipe(
+      map(snapshot => {
+        const task = new Task().deserialize(snapshot.payload.data());
+        task.id = snapshot.payload.id;
+        return task;
+      }),
+      shareReplay(1)
+    );
+  }
 }

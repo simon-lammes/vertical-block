@@ -1,9 +1,21 @@
 <app-dialog-header [heading]="'Task Details'" (cancelled)="cancel()"></app-dialog-header>
-<h4>Description</h4>
-<markdown *ngIf="!isDescriptionBeingEdited" (click)="isDescriptionBeingEdited = true" [data]="data.task.description">{{data.task.description}}</markdown>
-<form *ngIf="isDescriptionBeingEdited" [formGroup]="descriptionForm" (ngSubmit)="saveDescription()">
-  <mat-form-field>
-    <input type="text" placeholder="Description" matInput formControlName="description">
-  </mat-form-field>
-  <button *ngIf="descriptionForm.dirty && descriptionForm.valid" type="submit" mat-button>Save</button>
-</form>
+<div class="flex-container" *ngIf="task$ | async as task">
+  <!-- Left hand side -->
+  <div>
+    <h4 (click)="isDescriptionBeingEdited = true">Description</h4>
+    <markdown *ngIf="!isDescriptionBeingEdited" (click)="isDescriptionBeingEdited = true" [data]="task.description">{{task.description}}</markdown>
+    <form *ngIf="isDescriptionBeingEdited" [formGroup]="descriptionForm" (ngSubmit)="saveDescription()">
+      <mat-form-field>
+        <label>
+          <input type="text" placeholder="Description" matInput formControlName="description">
+        </label>
+      </mat-form-field>
+      <button *ngIf="descriptionForm.dirty && descriptionForm.valid" type="submit" mat-button>Save</button>
+    </form>
+  </div>
+  <!-- Right hand side -->
+  <div id="options">
+    <button mat-button (click)="assignToSelf()" *ngIf="!task.assigneeId">Assign to self</button>
+    <span *ngIf="profileOfAssignee$ | async as profile">{{profile.displayName}}</span>
+  </div>
+</div>

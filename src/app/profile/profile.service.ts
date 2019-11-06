@@ -79,7 +79,10 @@ export class ProfileService {
     ).toPromise();
   }
 
-  getProfileById$(userId: string) {
+  getProfileById$(userId: string): Observable<Profile> {
+    if (!userId) {
+      return of(undefined);
+    }
     return this.db.collection('profiles').doc<Profile>(userId).snapshotChanges().pipe(
       map(a => {
         const profile = a.payload.data() as Profile;

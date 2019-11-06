@@ -10,6 +10,7 @@ import {DialogService} from '../../shared/dialog/dialog.service';
 import {BoardMemberSettingsDialogComponent} from './board-member-settings-dialog/board-member-settings-dialog.component';
 import {TaskDetailDialogComponent} from './task-detail-dialog/task-detail-dialog.component';
 import {Task, TaskStatus} from '../task.model';
+import {BoardStatisticsDialogComponent} from './board-statistics-dialog/board-statistics-dialog.component';
 import {SaveBoardDialogComponent} from '../save-board-dialog/save-board-dialog.component';
 
 @Component({
@@ -107,7 +108,10 @@ export class BoardDetailComponent implements OnInit {
     const board = await this.board$.pipe(take(1)).toPromise();
     this.dialog.open(TaskDetailDialogComponent, {
       ...this.dialogService.getDefaultDialogConfiguration(),
-      data: {task, board}
+      data: {
+        taskId: task.id,
+        board
+      }
     });
   }
 
@@ -119,5 +123,9 @@ export class BoardDetailComponent implements OnInit {
         boardId: board.id
       }
     });
+  }
+
+  openStatisticsDialog() {
+    this.dialog.open(BoardStatisticsDialogComponent, {height: '90%', width: '90%'});
   }
 }

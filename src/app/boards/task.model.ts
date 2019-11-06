@@ -6,6 +6,7 @@ export class Task implements Deserializable, Serializable {
   public status: TaskStatus;
   public id: string;
   public description: string;
+  public assigneeId: string;
 
   deserialize(input: any): this {
     Object.assign(this, input);
