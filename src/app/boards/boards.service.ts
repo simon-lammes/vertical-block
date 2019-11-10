@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Board, BoardBlueprint} from './board.model';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, CollectionReference, Query} from '@angular/fire/firestore';
 import {map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {Observable, of} from 'rxjs';
 import {Task, TaskStatus} from './task.model';
+import {Profile} from '../profile/profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -77,18 +78,26 @@ export class BoardsService {
     );
   }
 
-  getTasksFromBoardByStatus$(board: Board, taskStatus: TaskStatus) {
-    return this.db.collection(`boards/${board.id}/tasks`, ref => ref
-      .where('status', '==', taskStatus)
-      .orderBy('name'))
-      .snapshotChanges()
-      .pipe(
-        map(snapshots => snapshots.map(snapshot => {
-          const task = new Task().deserialize(snapshot.payload.doc.data());
-          task.id = snapshot.payload.doc.id;
-          return task;
-        }))
-      );
+  // TODO write documentation
+  getTasksFromBoardByStatus$(board: Board, taskStatus: TaskStatus, assignee?: Profile) {
+    return this.db.collection(`boards/${board.id}/tasks`, ref => {
+        let query: CollectionReference | Query = ref;
+        if (taskStatus) {
+          query = query.where('status', '==', taskStatus);
+        }
+        if (assignee) {
+          query = query.where('assigneeId', '==', assignee.uid);
+        }
+        query = query.orderBy('name');
+        return query;
+      }
+    ).snapshotChanges().pipe(
+      map(snapshots => snapshots.map(snapshot => {
+        const task = new Task().deserialize(snapshot.payload.doc.data());
+        task.id = snapshot.payload.doc.id;
+        return task;
+      }))
+    );
   }
 
   deleteTaskFromBoard(task: Task, board: Board) {

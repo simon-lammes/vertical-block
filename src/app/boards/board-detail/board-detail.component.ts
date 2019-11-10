@@ -12,6 +12,7 @@ import {TaskDetailDialogComponent} from './task-detail-dialog/task-detail-dialog
 import {Task, TaskStatus} from '../task.model';
 import {BoardStatisticsDialogComponent} from './board-statistics-dialog/board-statistics-dialog.component';
 import {SaveBoardDialogComponent} from '../save-board-dialog/save-board-dialog.component';
+import {ProfileService} from '../../profile/profile.service';
 
 @Component({
   selector: 'app-board-tasks',
@@ -34,20 +35,22 @@ export class BoardDetailComponent implements OnInit {
     private boardService: BoardsService,
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private profileService: ProfileService
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.taskInputForm = new FormGroup({
       taskInput: new FormControl('')
     });
     // Data is provided by the resolver in BoardGuard
     this.board$ = this.activatedRoute.data.pipe(map(data => data.board));
+    const profile = await this.profileService.getProfileOfCurrentUserSnapshot();
     this.todos$ = this.board$.pipe(
       switchMap(board => {
         return this.boardService.getTasksFromBoardByStatus$(board, 'todo');
-      })
+  })
     );
     this.progress$ = this.board$.pipe(
       switchMap(board => {

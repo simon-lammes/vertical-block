@@ -22,8 +22,8 @@ export class DailyStatisticsComponent implements OnInit {
   inReviewCount$: Observable<number>;
   doneCount$: Observable<number>;
 
-
   @Input() board$: Observable<Board>;
+
 
   constructor(private boardService: BoardsService) {
   }

@@ -47,7 +47,7 @@ import {BoardMemberSettingsDialogComponent} from './boards/board-detail/board-me
 import {DialogHeaderComponent} from './shared/dialog/dialog-header/dialog-header.component';
 import {BoardMemberRoleChangerComponent} from './boards/board-detail/board-member-settings-dialog/board-member-role-changer/board-member-role-changer.component';
 import {TaskDetailDialogComponent} from './boards/board-detail/task-detail-dialog/task-detail-dialog.component';
-import {MyDoughnutChartComponent} from './boards/board-detail/board-statistics-dialog/my-doughnut-chart/my-doughnut-chart.component';
+import {DoughnutChartComponent} from './boards/board-detail/board-statistics-dialog/doughnut-chart/doughnut-chart.component';
 import {ChartsModule} from 'ng2-charts';
 import {DailyStatisticsComponent} from './boards/board-detail/board-statistics-dialog/daily-statistics/daily-statistics-component';
 import {BoardGuard} from './boards/board-detail/board.guard';
@@ -71,10 +71,10 @@ import {QuickActionsComponent} from './main-nav/quick-actions/quick-actions.comp
     BoardMemberRoleChangerComponent,
     TaskDetailDialogComponent,
     BoardStatisticsDialogComponent,
-    MyDoughnutChartComponent,
+    DoughnutChartComponent,
     DailyStatisticsComponent,
     BoardStatisticsDialogComponent,
-    MyDoughnutChartComponent,
+    DoughnutChartComponent,
     DailyStatisticsComponent,
     QuickActionsComponent,
   ],
