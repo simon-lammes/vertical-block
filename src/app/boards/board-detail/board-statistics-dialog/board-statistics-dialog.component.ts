@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {Board} from '../../board.model';
+import {BoardsService} from '../../boards.service';
 
 @Component({
   selector: 'app-board-statistics-dialog',
@@ -9,15 +12,21 @@ import {MatDialogRef} from '@angular/material/dialog';
 
 
 export class BoardStatisticsDialogComponent implements OnInit {
+  board$: Observable<Board>;
+
   constructor(
-      public dialogRef: MatDialogRef<BoardStatisticsDialogComponent>,
+    public dialogRef: MatDialogRef<BoardStatisticsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { boardId: string },
+    private boardService: BoardsService,
   ) {
   }
+
   ngOnInit() {
-  // console.log(this.currentLogin);
-}
-   cancel() {
+    this.board$ = this.boardService.getBoardById$(this.data.boardId);
+  }
+
+  cancel() {
     this.dialogRef.close();
-   }
+  }
 }
 

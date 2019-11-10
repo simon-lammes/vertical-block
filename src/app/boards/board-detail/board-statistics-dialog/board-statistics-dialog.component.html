@@ -1,4 +1,4 @@
 <app-dialog-header [heading]="'Statistics'" (cancelled)="cancel()"></app-dialog-header>
 
-<app-daily-statistics></app-daily-statistics>
+<app-daily-statistics [board$]="board$"></app-daily-statistics>
 <app-my-doughnut-chart></app-my-doughnut-chart>

@@ -1,7 +1,7 @@
 <p>As per {{getCurrentDate()}}</p>
 
-<p>0 Tasks need to be done</p>
-<p>0 Tasks are in progress</p>
-<p>0 Tasks are being reviewed</p>
-<p>0 Tasks are finished</p>
+<p *ngIf="todoCount$">{{todoCount$ | async}} Tasks need to be done</p>
+<p *ngIf="inProgressCount$">{{inProgressCount$ | async}} Tasks are in progress</p>
+<p *ngIf="inReviewCount$">{{inReviewCount$ | async}} Tasks are being reviewed</p>
+<p *ngIf="doneCount$">{{doneCount$ | async}} Tasks are finished</p>
 

@@ -42,7 +42,7 @@ export class BoardDetailComponent implements OnInit {
     this.taskInputForm = new FormGroup({
       taskInput: new FormControl('')
     });
-    //Data is provided by the resolver in BoardGuard
+    // Data is provided by the resolver in BoardGuard
     this.board$ = this.activatedRoute.data.pipe(map(data => data.board));
     this.todos$ = this.board$.pipe(
       switchMap(board => {
@@ -125,7 +125,16 @@ export class BoardDetailComponent implements OnInit {
     });
   }
 
-  openStatisticsDialog() {
-    this.dialog.open(BoardStatisticsDialogComponent, {height: '90%', width: '90%'});
+ async openStatisticsDialog() {
+    const boardId = await this.board$.pipe(
+      take(1),
+      map(board => board.id)
+    ).toPromise();
+    this.dialog.open(BoardStatisticsDialogComponent, {
+      ...this.dialogService.getDefaultDialogConfiguration(),
+      data: {
+         boardId
+      }
+    });
   }
 }
